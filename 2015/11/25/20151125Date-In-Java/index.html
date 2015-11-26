@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="java," />
 
 
 
@@ -51,19 +51,31 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="java 中的时间最近接了一个任务，在快要上线的时候发现完全没有考虑到时区的问题（国际业务开发的任务），当我要改的时候，发现对于标准时间，北京时间等等的东西很陌生，觉得很混乱，因此晚上回到家就想要把他弄明白。
+基本概念首先是基本概念
+
+时区：初中地理学过，北京处于东八区，因此使用的是东八区的时间。
+CST:china standard time utc+8:00 中国标准时间
+UTC:Univer">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://wyssurvivor.github.io/2015/11/21/hello-world/index.html">
+<meta property="og:title" content="Date-In-Java">
+<meta property="og:url" content="http://wyssurvivor.github.io/2015/11/25/20151125Date-In-Java/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2015-11-21T10:26:49.000Z">
+<meta property="og:description" content="java 中的时间最近接了一个任务，在快要上线的时候发现完全没有考虑到时区的问题（国际业务开发的任务），当我要改的时候，发现对于标准时间，北京时间等等的东西很陌生，觉得很混乱，因此晚上回到家就想要把他弄明白。
+基本概念首先是基本概念
+
+时区：初中地理学过，北京处于东八区，因此使用的是东八区的时间。
+CST:china standard time utc+8:00 中国标准时间
+UTC:Univer">
+<meta property="og:updated_time" content="2015-11-26T16:11:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Date-In-Java">
+<meta name="twitter:description" content="java 中的时间最近接了一个任务，在快要上线的时候发现完全没有考虑到时区的问题（国际业务开发的任务），当我要改的时候，发现对于标准时间，北京时间等等的东西很陌生，觉得很混乱，因此晚上回到家就想要把他弄明白。
+基本概念首先是基本概念
+
+时区：初中地理学过，北京处于东八区，因此使用的是东八区的时间。
+CST:china standard time utc+8:00 中国标准时间
+UTC:Univer">
 
 
 
@@ -75,7 +87,7 @@ Quick">
   };
 </script>
 
-  <title> Hello World | Ryan Wang </title>
+  <title> Date-In-Java | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -205,7 +217,7 @@ Quick">
             
             
               
-                Hello World
+                Date-In-Java
               
             
           </h1>
@@ -214,11 +226,26 @@ Quick">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-21T18:26:49+08:00" content="2015-11-21">
-              2015-11-21
+            <time itemprop="dateCreated" datetime="2015-11-25T01:07:01+08:00" content="2015-11-25">
+              2015-11-25
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -238,33 +265,59 @@ Quick">
       
 
       
-        <span itemprop="articleBody"><p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <span itemprop="articleBody"><h3 id="java_中的时间">java 中的时间</h3><p>最近接了一个任务，在快要上线的时候发现完全没有考虑到时区的问题（国际业务开发的任务），当我要改的时候，发现对于标准时间，北京时间等等的东西很陌生，觉得很混乱，因此晚上回到家就想要把他弄明白。</p>
+<h4 id="基本概念">基本概念</h4><p>首先是基本概念</p>
+<ul>
+<li>时区：初中地理学过，北京处于东八区，因此使用的是东八区的时间。</li>
+<li>CST:china standard time utc+8:00 中国标准时间</li>
+<li>UTC:Universal Time Coordinated 世界协调时间，这是标准时间与时区无关的时间。在0时区</li>
+<li>GMT:格林威治标准时间</li>
+<li>Unix timestamp:unix时间戳，从格林威治时间1970年1月1日0时00分00秒起至现在的总秒数。</li>
+<li>utc和gmt基本是一致的，gmt=utc,gmt+8=utc+8=cst</li>
+</ul>
+<h4 id="java中的时间">java中的时间</h4><p>现在我理解的Date表示的是一个时间点，据格林威治时间到现在的毫秒数，是与时区和locale都没有关系的一个概念。因此，在数据库里存储的时候一般是存储这个与时区没有关系的毫秒数。然后在需要显示时间的地方再根据时区设置转换成相应的时间格式。</p>
+<pre><code><span class="built_in">Date</span> <span class="built_in">date</span>=<span class="literal">new</span> <span class="built_in">Date</span>();
+SimpleDateFormat sdf7=<span class="literal">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);
+sdf7<span class="built_in">.</span>setTimeZone(TimezZone<span class="built_in">.</span>getTimeZone(<span class="string">"GMT+7"</span>));
+<span class="built_in">String</span> strDate=sdf7<span class="built_in">.</span>format(<span class="built_in">date</span>);
+</code></pre><p>在java中有两种获取标准时间毫秒时的方法</p>
+<ul>
+<li>System.getCurrentTimeMills()</li>
+<li>Date.getTime()</li>
+</ul>
+<pre><code><span class="built_in">Date</span> <span class="built_in">date</span>=<span class="literal">new</span> <span class="built_in">Date</span>();
+</code></pre><p>表示的是当前时间点，与时区无关。</p>
+<pre><code>SimpleDateFormat sdf=<span class="literal">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);
+sdf7<span class="built_in">.</span>setTimeZone(TimezZone<span class="built_in">.</span>getTimeZone(<span class="string">"GMT+7"</span>));
+<span class="built_in">String</span> strDate=sdf7<span class="built_in">.</span>format(<span class="built_in">date</span>);
+</code></pre><p>当要转换成可读的时间表示时，必须与时间挂钩。SimpleDateFormat可以完成这个转换，如果没有设置时区就去本地系统默认的时区。</p>
+<pre><code>Calendar calendar=Calendar.getInstance()<span class="comment">;</span>
+Date d=calendar.getTime()<span class="comment">;</span>
+</code></pre><p>Calendar是基于时区的，但从Calendar获得的Date时没有时区的。</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/11/24/20151124HA-AND-REPLICATION/" rel="next" title="HA-AND-REPLICATION">
+                <i class="fa fa-chevron-left"></i> HA-AND-REPLICATION
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/21/20151121-deploymavenproject/" rel="prev" title="eclipse创建maven spring项目并设置自动部署到tomcat">
-                eclipse创建maven spring项目并设置自动部署到tomcat <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -378,7 +431,7 @@ Quick">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick_Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create_a_new_post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run_server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate_static_files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy_to_remote_sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#java_中的时间"><span class="nav-number">1.</span> <span class="nav-text">java 中的时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#java中的时间"><span class="nav-number">1.2.</span> <span class="nav-text">java中的时间</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="distributed,mysql," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -51,34 +51,25 @@
 
 
 
-<meta name="description" content="ha 和 replication
-强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。
-半同步：当有一定数量的slave返回之后，master就会返回成功。 
-异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。
+<meta name="description" content="Timer java最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。
+在打开源码，看class 描述的时候，基本就明白了是为什么。
 
-mysql 的可靠性解决方案
-mysql默认使用的是异步的同步方式">
+Corresponding to each Timer object is a single background thread th">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HA-AND-REPLICATION">
-<meta property="og:url" content="http://wyssurvivor.github.io/2015/11/24/20151124HA-AND-REPLICATION/index.html">
+<meta property="og:title" content="Timer">
+<meta property="og:url" content="http://wyssurvivor.github.io/2015/12/05/20151205Timer/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="ha 和 replication
-强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。
-半同步：当有一定数量的slave返回之后，master就会返回成功。 
-异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。
+<meta property="og:description" content="Timer java最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。
+在打开源码，看class 描述的时候，基本就明白了是为什么。
 
-mysql 的可靠性解决方案
-mysql默认使用的是异步的同步方式">
-<meta property="og:updated_time" content="2015-11-23T16:22:22.000Z">
+Corresponding to each Timer object is a single background thread th">
+<meta property="og:updated_time" content="2015-12-05T07:37:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HA-AND-REPLICATION">
-<meta name="twitter:description" content="ha 和 replication
-强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。
-半同步：当有一定数量的slave返回之后，master就会返回成功。 
-异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。
+<meta name="twitter:title" content="Timer">
+<meta name="twitter:description" content="Timer java最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。
+在打开源码，看class 描述的时候，基本就明白了是为什么。
 
-mysql 的可靠性解决方案
-mysql默认使用的是异步的同步方式">
+Corresponding to each Timer object is a single background thread th">
 
 
 
@@ -90,7 +81,7 @@ mysql默认使用的是异步的同步方式">
   };
 </script>
 
-  <title> HA-AND-REPLICATION | Ryan Wang </title>
+  <title> Timer | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -220,7 +211,7 @@ mysql默认使用的是异步的同步方式">
             
             
               
-                HA-AND-REPLICATION
+                Timer
               
             
           </h1>
@@ -229,8 +220,8 @@ mysql默认使用的是异步的同步方式">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-24T00:01:02+08:00" content="2015-11-24">
-              2015-11-24
+            <time itemprop="dateCreated" datetime="2015-12-05T13:15:37+08:00" content="2015-12-05">
+              2015-12-05
             </time>
           </span>
 
@@ -239,8 +230,8 @@ mysql默认使用的是异步的同步方式">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
-                    <span itemprop="name">distributed system</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -268,16 +259,91 @@ mysql默认使用的是异步的同步方式">
       
 
       
-        <span itemprop="articleBody"><h2 id="ha_和_replication">ha 和 replication</h2><ul>
-<li>强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。</li>
-<li>半同步：当有一定数量的slave返回之后，master就会返回成功。 </li>
-<li>异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。</li>
-</ul>
-<h4 id="mysql_的可靠性解决方案">mysql 的可靠性解决方案</h4><blockquote>
-<p>mysql默认使用的是异步的同步方式，在mysql5.6中加入了一种半同步方式，当有一半的slave返回时，master就返回成功。在5.7中加入了一个lossless模式，主要是解决半同步方式中的数据丢失的情况，我没有仔细看过具体的实现方式，等以后看过再更新。</p>
+        <span itemprop="articleBody"><h2 id="Timer_java">Timer java</h2><p>最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。</p>
+<p>在打开源码，看class 描述的时候，基本就明白了是为什么。</p>
+<blockquote>
+<p>Corresponding to each Timer object is a single background thread that is used to execute all of the timer’s tasks,sequentially.Timer tasks should complete quickly. If a timer task takes excessive time to complete, it hogs the timer’s task execution thread. This can, in turn , delay the execution of subsequent tasks,which may bunch up and execute in rapid succesion when the offending task finally completes.</p>
 </blockquote>
-<p>在我刚毕业来公司接的第一个任务就涉及到了mysql的可靠性方案的问题。在我的代码中有这样一段逻辑：像mysql中插入数据然后马上取出表中所有的数据。当时就出现了非常奇怪的现象，当我得到取出来的数据时，发现之前刚刚执行完的插入操作并没生效。当时，我的mentor告诉我是master的数据还没有同步到slave上，而读操作时从slave上读取的。现在想来，在当时测试环境下的mysql配置使用的是异步方式同步数据。</p>
-<p>接下来，可能会更新mysql replcation的部署实例。</p>
+<p>每一个Timer对象都有一个线程在运行，线程顺序的执行任务。如果一个task执行超时，会导致后面的任务延迟执行。</p>
+<p>Timer中字段</p>
+<pre><code><span class="keyword">private</span> TaskQueue <span class="built_in">queue</span>=<span class="keyword">new</span> TaskQueue();
+<span class="keyword">private</span> TimerThread thread=<span class="keyword">new</span> TimerThread();
+<span class="keyword">private</span> Object threadReaper=<span class="keyword">new</span> Object(){
+    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> throws Throwable</span>{
+        synchronized(<span class="built_in">queue</span>){
+            thread.newTaskMayBeShceduled=<span class="literal">false</span>;
+            <span class="built_in">queue</span>.notify();
+        }
+    }
+};
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> nextSerialNumber=<span class="number">0</span>;
+<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> synchronized <span class="keyword">int</span> <span class="title">serialNumber</span><span class="params">()</span></span>{
+    <span class="keyword">return</span> nextSerialNumber++;
+}
+</code></pre><p>queue是Timer中的任务队列，由thread顺序执行。queue里面用最小堆实现，里面的一些算法都是数据结构与算法里的基础，不多介绍。thread就是前面说到的Timer对应的线程，他是TimerThread类型的。</p>
+<pre><code><span class="keyword">class</span> TimerThread extends Thread{
+    <span class="comment">//This flag is set to false by the reaper to inform us that there are //no more live references to our Timer object.</span>
+    boolean newTaskMayBeScheduled = <span class="literal">true</span>;
+    <span class="keyword">private</span> TaskQueue <span class="built_in">queue</span>;
+    TimerThread(TaskQueue <span class="built_in">queue</span>){
+        <span class="keyword">this</span>.<span class="built_in">queue</span>=<span class="built_in">queue</span>;
+    }
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>{
+        <span class="keyword">try</span>{
+            mainLoop();
+            }finally{
+                synchronized(<span class="built_in">queue</span>){
+                    newTaskMayBeScheduled=<span class="literal">false</span>;
+                    <span class="built_in">queue</span>.clear();
+                }
+        }
+    }
+    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mainLoop</span><span class="params">()</span></span>{
+        <span class="keyword">while</span>(<span class="literal">true</span>){
+            <span class="keyword">try</span>{
+                TimerTask task;
+                boolean taskFired;
+                synchronized(<span class="built_in">queue</span>){
+                    <span class="keyword">while</span>(<span class="built_in">queue</span>.isEmpty()&amp;&amp;newTaskMayBeScheduled){
+                        <span class="built_in">queue</span>.wait();
+                    }
+                    <span class="keyword">if</span>(<span class="built_in">queue</span>.isEmpty())
+                        <span class="keyword">break</span>;
+                    <span class="keyword">long</span> currentTime,executionTime;
+                    task=<span class="built_in">queue</span>.getMin();
+                    synchronized(task.lock){
+                        <span class="keyword">if</span>(task.state==TimerTask.CANCELLED){
+                            <span class="built_in">queue</span>.removeMin();
+                            <span class="keyword">continue</span>;
+                        }
+                        currentTime=System.currentTimeMills();
+                        executionTime=task.nextExecutionTime();
+                        <span class="keyword">if</span>(taskFired=(executionTime&lt;=currentTime)){
+                            <span class="keyword">if</span>(task.period==<span class="number">0</span>){
+                                <span class="built_in">queue</span>.removeMin();
+                                task.state=TimerTask.EXECUTED;
+                            }<span class="keyword">else</span>{
+                                <span class="built_in">queue</span>.rescheduleMin(task.period&lt;<span class="number">0</span>?currentTIme-task.period:executionTime+task.period);
+                            }
+                        }
+                    }
+                    <span class="keyword">if</span>(!taskFired){
+                        <span class="built_in">queue</span>.wait(executionTime-currentTime);
+                    }
+                }
+                <span class="keyword">if</span>(taskFired)
+                    task.run();
+            }<span class="keyword">catch</span>(InterruptedException e){
+            }
+        }
+    }
+}
+</code></pre><p>Timer中有两个函数，schedule和scheduleAtFixedRate。他们的区别用语言描述不好描述也不直观，直接看源码。在上面TimerThread的mainLoop种，在取出执行时间最小的任务之后，在执行之前先计算这个任务下一次执行的时间，然后再把它重新扔进队列中。在此处计算下一次执行时间的时候，这两个方法加入的任务的计算方式是不一样的。</p>
+<ul>
+<li>由schedule添加的task，其下一次执行的计算时间是currentTime+period</li>
+<li>由scheduleAtFixedRate添加的task，其下一次执行的计算时间是executionTime+period</li>
+</ul>
+<p>我的代码中使用的是scheduleAtFixedRate函数，然而还是出现了delay的情况，说明时前面有的task执行的非常慢，导致后面的task全部delay了。</p>
 </span>
       
     </div>
@@ -286,9 +352,7 @@ mysql默认使用的是异步的同步方式">
       
         <div class="post-tags">
           
-            <a href="/tags/distributed/" rel="tag">#distributed</a>
-          
-            <a href="/tags/mysql/" rel="tag">#mysql</a>
+            <a href="/tags/java/" rel="tag">#java</a>
           
         </div>
       
@@ -297,17 +361,13 @@ mysql默认使用的是异步的同步方式">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/21/20151121-deploymavenproject/" rel="next" title="eclipse创建maven spring项目并设置自动部署到tomcat">
-                <i class="fa fa-chevron-left"></i> eclipse创建maven spring项目并设置自动部署到tomcat
+              <a href="/2015/11/28/20151128vi/" rel="next" title="vi">
+                <i class="fa fa-chevron-left"></i> vi
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/25/20151125Date-In-Java/" rel="prev" title="Date-In-Java">
-                Date-In-Java <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -421,7 +481,7 @@ mysql默认使用的是异步的同步方式">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ha_和_replication"><span class="nav-number">1.</span> <span class="nav-text">ha 和 replication</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql_的可靠性解决方案"><span class="nav-number">1.0.1.</span> <span class="nav-text">mysql 的可靠性解决方案</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Timer_java"><span class="nav-number">1.</span> <span class="nav-text">Timer java</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

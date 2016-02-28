@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="distributed,mysql," />
+  <meta name="keywords" content="homebrew,python," />
 
 
 
@@ -51,34 +51,18 @@
 
 
 
-<meta name="description" content="ha 和 replication
-强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。
-半同步：当有一定数量的slave返回之后，master就会返回成功。 
-异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。
-
-mysql 的可靠性解决方案
-mysql默认使用的是异步的同步方式">
+<meta name="description" content="最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HA-AND-REPLICATION">
-<meta property="og:url" content="http://wyssurvivor.github.io/2015/11/24/20151124HA-AND-REPLICATION/index.html">
+<meta property="og:title" content="20160228-pyqt_install_and_homebrew_use">
+<meta property="og:url" content="http://wyssurvivor.github.io/2016/02/28/20160228-pyqt-install-and-homebrew-use/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="ha 和 replication
-强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。
-半同步：当有一定数量的slave返回之后，master就会返回成功。 
-异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。
-
-mysql 的可靠性解决方案
-mysql默认使用的是异步的同步方式">
-<meta property="og:updated_time" content="2015-11-23T16:22:22.000Z">
+<meta property="og:description" content="最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，">
+<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.11.30.png">
+<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.36.19.png">
+<meta property="og:updated_time" content="2016-02-28T07:09:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HA-AND-REPLICATION">
-<meta name="twitter:description" content="ha 和 replication
-强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。
-半同步：当有一定数量的slave返回之后，master就会返回成功。 
-异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。
-
-mysql 的可靠性解决方案
-mysql默认使用的是异步的同步方式">
+<meta name="twitter:title" content="20160228-pyqt_install_and_homebrew_use">
+<meta name="twitter:description" content="最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，">
 
 
 
@@ -90,7 +74,7 @@ mysql默认使用的是异步的同步方式">
   };
 </script>
 
-  <title> HA-AND-REPLICATION | Ryan Wang </title>
+  <title> 20160228-pyqt_install_and_homebrew_use | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -220,7 +204,7 @@ mysql默认使用的是异步的同步方式">
             
             
               
-                HA-AND-REPLICATION
+                20160228-pyqt_install_and_homebrew_use
               
             
           </h1>
@@ -229,8 +213,8 @@ mysql默认使用的是异步的同步方式">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-24T00:01:02+08:00" content="2015-11-24">
-              2015-11-24
+            <time itemprop="dateCreated" datetime="2016-02-28T14:39:31+08:00" content="2016-02-28">
+              2016-02-28
             </time>
           </span>
 
@@ -239,8 +223,8 @@ mysql默认使用的是异步的同步方式">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
-                    <span itemprop="name">distributed system</span>
+                  <a href="/categories/tech/" itemprop="url" rel="index">
+                    <span itemprop="name">tech</span>
                   </a>
                 </span>
 
@@ -268,16 +252,14 @@ mysql默认使用的是异步的同步方式">
       
 
       
-        <span itemprop="articleBody"><h2 id="ha_和_replication">ha 和 replication</h2><ul>
-<li>强同步：master在收到commit之后，当所有slave都写成功之后，才会返回成功。</li>
-<li>半同步：当有一定数量的slave返回之后，master就会返回成功。 </li>
-<li>异步：master收到commit，在本地写成功之后，直接返回成功。本地会有线程给slave发消息，slave有线程接受消息，并执行。</li>
-</ul>
-<h4 id="mysql_的可靠性解决方案">mysql 的可靠性解决方案</h4><blockquote>
-<p>mysql默认使用的是异步的同步方式，在mysql5.6中加入了一种半同步方式，当有一半的slave返回时，master就返回成功。在5.7中加入了一个lossless模式，主要是解决半同步方式中的数据丢失的情况，我没有仔细看过具体的实现方式，等以后看过再更新。</p>
-</blockquote>
-<p>在我刚毕业来公司接的第一个任务就涉及到了mysql的可靠性方案的问题。在我的代码中有这样一段逻辑：像mysql中插入数据然后马上取出表中所有的数据。当时就出现了非常奇怪的现象，当我得到取出来的数据时，发现之前刚刚执行完的插入操作并没生效。当时，我的mentor告诉我是master的数据还没有同步到slave上，而读操作时从slave上读取的。现在想来，在当时测试环境下的mysql配置使用的是异步方式同步数据。</p>
-<p>接下来，可能会更新mysql replcation的部署实例。</p>
+        <span itemprop="articleBody"><p>最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，我用python嘛。然后就装pyqt，使用homebrew安装非常的简单，如果想要源代码安装，也不难，但我还是不想浪费时间。</p>
+<pre><code><span class="keyword">brew </span>install pyqt
+</code></pre><p>homebrew会把pyqt依赖的东西一并下载安装，qt和sip。安装完成，发现报错。</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.11.30.png" alt="homebrew error"></p>
+<p>如上图，执行link qt的时候出错，对于homebrew使用并不熟练的我就去google了一下，在<a href="http://stackoverflow.com/questions/27784545/brew-error-could-not-symlink-path-is-not-writable" target="_blank" rel="external">stack overflow</a>上发现了解决方法。使用</p>
+<pre><code><span class="keyword">brew </span>doctor
+</code></pre><p>命令，可以看到homebrew给出的解决方法，按照提示，就可以修正error了。</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.36.19.png" alt="error correct"></p>
 </span>
       
     </div>
@@ -286,9 +268,9 @@ mysql默认使用的是异步的同步方式">
       
         <div class="post-tags">
           
-            <a href="/tags/distributed/" rel="tag">#distributed</a>
+            <a href="/tags/homebrew/" rel="tag">#homebrew</a>
           
-            <a href="/tags/mysql/" rel="tag">#mysql</a>
+            <a href="/tags/python/" rel="tag">#python</a>
           
         </div>
       
@@ -297,17 +279,13 @@ mysql默认使用的是异步的同步方式">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/21/20151121-deploymavenproject/" rel="next" title="eclipse创建maven spring项目并设置自动部署到tomcat">
-                <i class="fa fa-chevron-left"></i> eclipse创建maven spring项目并设置自动部署到tomcat
+              <a href="/2015/12/05/20151205Timer/" rel="next" title="Timer">
+                <i class="fa fa-chevron-left"></i> Timer
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/25/20151125Date-In-Java/" rel="prev" title="Date-In-Java">
-                Date-In-Java <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -421,7 +399,7 @@ mysql默认使用的是异步的同步方式">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ha_和_replication"><span class="nav-number">1.</span> <span class="nav-text">ha 和 replication</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql_的可靠性解决方案"><span class="nav-number">1.0.1.</span> <span class="nav-text">mysql 的可靠性解决方案</span></a></li></ol></li></ol></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

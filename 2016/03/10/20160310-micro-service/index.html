@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="distributed," />
 
 
 
@@ -51,19 +51,30 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="Monolithic architecture传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图
+
+这种架构的好处在于，易于开发，易于部署，易于水平扩展。缺点却是很明显
+
+不利于项目组中">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://wyssurvivor.github.io/2015/11/21/hello-world/index.html">
+<meta property="og:title" content="micro service">
+<meta property="og:url" content="http://wyssurvivor.github.io/2016/03/10/20160310-micro-service/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2015-11-21T10:26:49.000Z">
+<meta property="og:description" content="Monolithic architecture传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图
+
+这种架构的好处在于，易于开发，易于部署，易于水平扩展。缺点却是很明显
+
+不利于项目组中">
+<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-10%20%E4%B8%8B%E5%8D%8811.43.11.png">
+<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-11%20%E4%B8%8A%E5%8D%8812.14.31.png">
+<meta property="og:updated_time" content="2016-03-10T16:36:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="micro service">
+<meta name="twitter:description" content="Monolithic architecture传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图
+
+这种架构的好处在于，易于开发，易于部署，易于水平扩展。缺点却是很明显
+
+不利于项目组中">
 
 
 
@@ -75,7 +86,7 @@ Quick">
   };
 </script>
 
-  <title> Hello World | Ryan Wang </title>
+  <title> micro service | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -205,7 +216,7 @@ Quick">
             
             
               
-                Hello World
+                micro service
               
             
           </h1>
@@ -214,11 +225,26 @@ Quick">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-21T18:26:49+08:00" content="2015-11-21">
-              2015-11-21
+            <time itemprop="dateCreated" datetime="2016-03-10T22:59:48+08:00" content="2016-03-10">
+              2016-03-10
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/architecture/" itemprop="url" rel="index">
+                    <span itemprop="name">architecture</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -238,33 +264,52 @@ Quick">
       
 
       
-        <span itemprop="articleBody"><p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <span itemprop="articleBody"><h2 id="Monolithic_architecture">Monolithic architecture</h2><p>传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-10%20%E4%B8%8B%E5%8D%8811.43.11.png" alt="monolithic"></p>
+<p>这种架构的好处在于，易于开发，易于部署，易于水平扩展。<br>缺点却是很明显</p>
+<ul>
+<li>不利于项目组中的新人上手</li>
+<li>不利于做持续部署（不知道continuous deployment怎么翻译），为了修改一个模块而必须重新发布部署整个项目。</li>
+<li>数据库无法扩容，并且每个server实例都会访问所有的数据，使得数据库的缓存失效</li>
+<li>团队开发合并代码出现冲突概率更大</li>
+<li>…</li>
+</ul>
+<h2 id="Microservices_architechture">Microservices architechture</h2><p>为了解决monolithic架构的问题，最近几年业界提出了micro service的架构，而且这种架构在实际运用中使用的越来越广泛。<br>这种架构引入了<a href="http://microservices.io/articles/scalecube.html" target="_blank" rel="external">scale cube</a>的思想,把一整个项目按照功能区分为很多个不同的service，每个service提供一个核心的功能歌，并且只做这一件事情。比如说，电商系统架构包含支付服务、物品信息服务、用户管理服务、订单服务等。<br>服务之间的通信使用同步协议如http／rest／thrift，或者异步协议。<br>服务的部署是相互分割开来的。每个service有自己的数据库</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-11%20%E4%B8%8A%E5%8D%8812.14.31.png" alt="microservice"></p>
+<p>这种架构的缺点</p>
+<ul>
+<li>难测试</li>
+<li>需要处理服务之间的信息交互问题</li>
+<li>这种架构提升了部署和管理系统的复杂度<br>这种架构的优点</li>
+<li>每个服务专注于一个目的，小而精</li>
+<li>服务单独部署</li>
+<li>能有效的隔离系统错误，某个服务出现问题，并不会影响其他的服务</li>
+</ul>
+<p>我的疑问？如果每个服务有自己的数据库，那么如果在需要联合查询的场景下，微服务架构怎么解决这个问题？<a href="http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015" target="_blank" rel="external">http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015</a></p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/distributed/" rel="tag">#distributed</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/03/06/20160306-message-queue-system-of-xiecheng/" rel="next" title="携程消息系统学习笔记1">
+                <i class="fa fa-chevron-left"></i> 携程消息系统学习笔记1
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/21/20151121-deploymavenproject/" rel="prev" title="eclipse创建maven spring项目并设置自动部署到tomcat">
-                eclipse创建maven spring项目并设置自动部署到tomcat <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -378,7 +423,7 @@ Quick">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick_Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create_a_new_post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run_server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate_static_files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy_to_remote_sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Monolithic_architecture"><span class="nav-number">1.</span> <span class="nav-text">Monolithic architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Microservices_architechture"><span class="nav-number">2.</span> <span class="nav-text">Microservices architechture</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

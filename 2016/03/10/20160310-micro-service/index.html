@@ -67,7 +67,10 @@
 不利于项目组中">
 <meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-10%20%E4%B8%8B%E5%8D%8811.43.11.png">
 <meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-11%20%E4%B8%8A%E5%8D%8812.14.31.png">
-<meta property="og:updated_time" content="2016-03-10T16:36:16.000Z">
+<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%885.52.30.png">
+<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.16.43.png">
+<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.28.40.png">
+<meta property="og:updated_time" content="2016-03-12T11:30:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="micro service">
 <meta name="twitter:description" content="Monolithic architecture传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图
@@ -286,6 +289,35 @@
 <li>能有效的隔离系统错误，某个服务出现问题，并不会影响其他的服务</li>
 </ul>
 <p>我的疑问？如果每个服务有自己的数据库，那么如果在需要联合查询的场景下，微服务架构怎么解决这个问题？<a href="http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015" target="_blank" rel="external">http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015</a></p>
+<h2 id="API_Gateway">API Gateway</h2><p>如果用微服务的架构开发一个电商网站，产品详情页可能需要用到的服务有产品信息服务、价格服务、订单服务、库存服务等。那么一些问题也随之而来</p>
+<ul>
+<li>因为微服务架构下，没个服务都是专注的，那么整个系统中会有很多服务</li>
+<li>不同的客户端需要不同的数据</li>
+<li>服务的实例的数量和地址会动态变化的</li>
+<li>服务划分的过程应该是对客户端透明的。</li>
+</ul>
+<p>在这些服务前面加上一层，就能有效解决上面这些问题，这就是api gateway</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%885.52.30.png" alt="api gateway"></p>
+<p>加入API Gateway的好处是</p>
+<ul>
+<li>把服务的划分跟客户端分隔开</li>
+<li>客户端不需要知道也不关心这些服务的位置</li>
+<li>为不同类型的客户端选择最合适的服务</li>
+<li>把调用服务的逻辑放在 api gateway层，简化了客户端</li>
+</ul>
+<p>这种方法有两个缺点</p>
+<ul>
+<li>api gateway需要开发和维护</li>
+<li>增加了一次客户端调用返回的总时间</li>
+</ul>
+<h2 id="Client-side_service_discovery">Client-side service discovery</h2><p>服务之间也会相互调用。在monolithic架构下，服务调用是通过语言层上的函数调用实现的。在传统架构下，我们知道服务的固定的地址，因此可以轻易的调用它。<br>然而，在微服务架构下，服务的地址和实例数量都会变得，而且服务很可能跑在虚拟容器中，它的ip也是会变得。因此，我们需要解决的问题就是让服务的客户端能够向动态变化的服务实力集合发起访问。API Gateway，作为服务的客户端，该如何发现服务实例。解决方案如下图</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.16.43.png" alt="clientside discovery"></p>
+<h2 id="Server-side_service_discovery">Server-side service discovery</h2><p>对于前面提出的服务发现问题，还有一种Server side discovery的方法。客户端在要访问某个服务时，客户端先访问一个router（部署在固定的网络地址），这个router向service registry发起查询，然后向服务的某个实例发起访问。</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.28.40.png" alt="serverside discovery"></p>
+<p>与client－side service discovery相比，server side discovery的客户端代码更简单，然而却增加了更多的网络访问步骤。</p>
+<h2 id="Service_registry">Service registry</h2><p>前两节提到的，关于服务注册。相当于一个存储服务信息的数据库，存储了实例信息和地址等信息。当服务实例启动的时候，在注册服务注册自己，实例停止的时候，告知注册服务。eureka、zookeeper等是现有的service registry。<br>服务的客户端可以通过service registry 发现服务。然而，这也给整个架构带来风险，一旦service registry down掉，整个架构都不可用。</p>
+<h2 id="Self_registration">Self registration</h2><p>如何实现service registry，服务必须在启动和关闭的时候注册，并且当服务crash 的时候也需要unregistry。因此，服务必须周期性的更新自得信息，重新注册。<br>使用zookeeper作service registry。没个服务对应zookeeper中的一个znode。在服务的一个实例启动的时候，在zookeeper该服务的znode节点下新家一个临时性的znode节点，标示一个实例。该节点包含了服务实例的地址信息。客户端取到该服务下的所有节点来决定调用哪个实例。如果实例非法推出，没有从zookeeper删除节点，则zookeeper会在过期时间到的时候删除节点</p>
+<h2 id="3rd_Party_Registry">3rd Party Registry</h2><p>加入第三方注册器来负责服务的注册。<br>这种方式可以简化服务代码，服务并不需要考虑注册的问题。</p>
 </span>
       
     </div>
@@ -423,7 +455,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Monolithic_architecture"><span class="nav-number">1.</span> <span class="nav-text">Monolithic architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Microservices_architechture"><span class="nav-number">2.</span> <span class="nav-text">Microservices architechture</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Monolithic_architecture"><span class="nav-number">1.</span> <span class="nav-text">Monolithic architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Microservices_architechture"><span class="nav-number">2.</span> <span class="nav-text">Microservices architechture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API_Gateway"><span class="nav-number">3.</span> <span class="nav-text">API Gateway</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-side_service_discovery"><span class="nav-number">4.</span> <span class="nav-text">Client-side service discovery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-side_service_discovery"><span class="nav-number">5.</span> <span class="nav-text">Server-side service discovery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Service_registry"><span class="nav-number">6.</span> <span class="nav-text">Service registry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Self_registration"><span class="nav-number">7.</span> <span class="nav-text">Self registration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3rd_Party_Registry"><span class="nav-number">8.</span> <span class="nav-text">3rd Party Registry</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

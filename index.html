@@ -210,6 +210,137 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/02/20160702-threadlocal/" itemprop="url">
+                  threadlocal
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-07-02T13:58:26+08:00" content="2016-07-02">
+              2016-07-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="ThreadLocal">ThreadLocal</h2><p>为了解决多线程并发访问的问题，比较流行的做法是通过加锁等技术实现多线程访问的同步。而ThreadLocal从另一个角度给出了一种解决方案，就是多个线程不再访问公共的数据，而是每一个线程都有自己独一份的数据，因此再怎么修改也不会影响到其他线程。</p>
+<p>这种方法在有些情况下比较适用，比如数据库连接池用ThreadLocal来保存当前线程所使用的Connection，以保证事物的有效性。</p>
+<p>那么ThreadLocal是如何实现的呢？通过查看源码可以看到，在Thread的类生命中有如下一个threadlocalmap</p>
+<pre><code>ThreadLocal.ThreadLocalMap threadLocals = <span class="literal">null</span>;
+</code></pre><p>这个ThreadLocalMap是ThreadLocal的内部类，它的实现方式有点类似于HashMap。内部存储是由下面这个数组负责实现的</p>
+<pre><code><span class="keyword">private</span> <span class="built_in">Entry</span>[] table;
+</code></pre><p>Entry是ThreadLocalMap的一个内部类，就是ThreadLocalMap中数组元素的类型</p>
+<pre><code>static <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">WeakReference&lt;ThreadLocal&gt;</span> {</span>
+    <span class="type">Object</span> value;
+    <span class="type">Entry</span>(<span class="type">ThreadLocal</span> k, <span class="type">Object</span> v) {
+        <span class="keyword">super</span>(k);
+        value = v;
+    }
+}
+</code></pre><p>如此可以看到，这个Entry继承了WeakReference类，弱引用引用的是ThreadLocal，同时，这个ThreadLocal对象也用来当做一个Key区分Object。这个地方使用了弱引用，关于java中的弱引用以后再专门写点东西研究一下。</p>
+<p>到这里，可能已经有点晕了，其实看一下ThreadLocal的get和set实现基本就能理解这个地方到底是如何实现的了。</p>
+<pre><code><span class="keyword">public</span> T get() {
+    <span class="keyword">Thread</span> t = <span class="keyword">Thread</span><span class="built_in">.</span>currentThread();
+    ThreadLocalMap <span class="built_in">map</span> = getMap(t);
+    <span class="keyword">if</span> (<span class="built_in">map</span> != <span class="built_in">null</span>) {
+        ThreadLocalMap<span class="built_in">.</span>Entry e = <span class="built_in">map</span><span class="built_in">.</span>getEntry(this);
+        <span class="keyword">if</span> (e != <span class="built_in">null</span>)
+            <span class="keyword">return</span> (T)e<span class="built_in">.</span>value;
+    }
+    <span class="keyword">return</span> setInitialValue();
+}
+<span class="keyword">public</span> <span class="literal">void</span> <span class="built_in">set</span>(T value) {
+    <span class="keyword">Thread</span> t = <span class="keyword">Thread</span><span class="built_in">.</span>currentThread();
+    ThreadLocalMap <span class="built_in">map</span> = getMap(t);
+    <span class="keyword">if</span> (<span class="built_in">map</span> != <span class="built_in">null</span>)
+        <span class="built_in">map</span><span class="built_in">.</span><span class="built_in">set</span>(this, value);
+    <span class="keyword">else</span>
+        createMap(t, value);
+}
+</code></pre><p>这个ThreadLocal操作Thread线程自己的ThreadLocalMap来get和set数据，同时ThreadLocal把自己当作Key。</p>
+<p>这个ThreadLocal其实是用空间来换时间的一种思路，使用它会使得内存占用更多的空间。不应该用ThreadLocal存储很大的数据，否则在线程很多的情况下，会大量占用内存，导致jvm gc频繁发生，使得系统的响应变慢很多。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/10/20160310-micro-service/" itemprop="url">
                   micro service
                 </a>
@@ -1774,7 +1905,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

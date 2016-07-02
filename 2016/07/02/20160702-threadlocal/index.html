@@ -51,25 +51,19 @@
 
 
 
-<meta name="description" content="Timer java最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。
-在打开源码，看class 描述的时候，基本就明白了是为什么。
-
-Corresponding to each Timer object is a single background thread th">
+<meta name="description" content="ThreadLocal为了解决多线程并发访问的问题，比较流行的做法是通过加锁等技术实现多线程访问的同步。而ThreadLocal从另一个角度给出了一种解决方案，就是多个线程不再访问公共的数据，而是每一个线程都有自己独一份的数据，因此再怎么修改也不会影响到其他线程。
+这种方法在有些情况下比较适用，比如数据库连接池用ThreadLocal来保存当前线程所使用的Connection，以保证事物的有效性。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Timer">
-<meta property="og:url" content="http://wyssurvivor.github.io/2015/12/05/20151205Timer/index.html">
+<meta property="og:title" content="threadlocal">
+<meta property="og:url" content="http://wyssurvivor.github.io/2016/07/02/20160702-threadlocal/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="Timer java最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。
-在打开源码，看class 描述的时候，基本就明白了是为什么。
-
-Corresponding to each Timer object is a single background thread th">
-<meta property="og:updated_time" content="2015-12-05T07:37:43.000Z">
+<meta property="og:description" content="ThreadLocal为了解决多线程并发访问的问题，比较流行的做法是通过加锁等技术实现多线程访问的同步。而ThreadLocal从另一个角度给出了一种解决方案，就是多个线程不再访问公共的数据，而是每一个线程都有自己独一份的数据，因此再怎么修改也不会影响到其他线程。
+这种方法在有些情况下比较适用，比如数据库连接池用ThreadLocal来保存当前线程所使用的Connection，以保证事物的有效性。">
+<meta property="og:updated_time" content="2016-07-02T13:11:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Timer">
-<meta name="twitter:description" content="Timer java最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。
-在打开源码，看class 描述的时候，基本就明白了是为什么。
-
-Corresponding to each Timer object is a single background thread th">
+<meta name="twitter:title" content="threadlocal">
+<meta name="twitter:description" content="ThreadLocal为了解决多线程并发访问的问题，比较流行的做法是通过加锁等技术实现多线程访问的同步。而ThreadLocal从另一个角度给出了一种解决方案，就是多个线程不再访问公共的数据，而是每一个线程都有自己独一份的数据，因此再怎么修改也不会影响到其他线程。
+这种方法在有些情况下比较适用，比如数据库连接池用ThreadLocal来保存当前线程所使用的Connection，以保证事物的有效性。">
 
 
 
@@ -81,7 +75,7 @@ Corresponding to each Timer object is a single background thread th">
   };
 </script>
 
-  <title> Timer | Ryan Wang </title>
+  <title> threadlocal | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -211,7 +205,7 @@ Corresponding to each Timer object is a single background thread th">
             
             
               
-                Timer
+                threadlocal
               
             
           </h1>
@@ -220,8 +214,8 @@ Corresponding to each Timer object is a single background thread th">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-05T13:15:37+08:00" content="2015-12-05">
-              2015-12-05
+            <time itemprop="dateCreated" datetime="2016-07-02T13:58:26+08:00" content="2016-07-02">
+              2016-07-02
             </time>
           </span>
 
@@ -259,91 +253,42 @@ Corresponding to each Timer object is a single background thread th">
       
 
       
-        <span itemprop="articleBody"><h2 id="Timer_java">Timer java</h2><p>最近在线上环境中使用Timer碰到了一些问题。在线上环境中有一个跑定时任务的机器，但是我最近发现它跑起来有些诡异，时间差的很多，差半天的时候都有可能。于是，看一下这里面的源码实现。</p>
-<p>在打开源码，看class 描述的时候，基本就明白了是为什么。</p>
-<blockquote>
-<p>Corresponding to each Timer object is a single background thread that is used to execute all of the timer’s tasks,sequentially.Timer tasks should complete quickly. If a timer task takes excessive time to complete, it hogs the timer’s task execution thread. This can, in turn , delay the execution of subsequent tasks,which may bunch up and execute in rapid succesion when the offending task finally completes.</p>
-</blockquote>
-<p>每一个Timer对象都有一个线程在运行，线程顺序的执行任务。如果一个task执行超时，会导致后面的任务延迟执行。</p>
-<p>Timer中字段</p>
-<pre><code><span class="keyword">private</span> TaskQueue <span class="built_in">queue</span>=<span class="keyword">new</span> TaskQueue();
-<span class="keyword">private</span> TimerThread thread=<span class="keyword">new</span> TimerThread();
-<span class="keyword">private</span> Object threadReaper=<span class="keyword">new</span> Object(){
-    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> throws Throwable</span>{
-        synchronized(<span class="built_in">queue</span>){
-            thread.newTaskMayBeShceduled=<span class="literal">false</span>;
-            <span class="built_in">queue</span>.notify();
-        }
-    }
-};
-<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> nextSerialNumber=<span class="number">0</span>;
-<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> synchronized <span class="keyword">int</span> <span class="title">serialNumber</span><span class="params">()</span></span>{
-    <span class="keyword">return</span> nextSerialNumber++;
-}
-</code></pre><p>queue是Timer中的任务队列，由thread顺序执行。queue里面用最小堆实现，里面的一些算法都是数据结构与算法里的基础，不多介绍。thread就是前面说到的Timer对应的线程，他是TimerThread类型的。</p>
-<pre><code><span class="keyword">class</span> TimerThread extends Thread{
-    <span class="comment">//This flag is set to false by the reaper to inform us that there are //no more live references to our Timer object.</span>
-    boolean newTaskMayBeScheduled = <span class="literal">true</span>;
-    <span class="keyword">private</span> TaskQueue <span class="built_in">queue</span>;
-    TimerThread(TaskQueue <span class="built_in">queue</span>){
-        <span class="keyword">this</span>.<span class="built_in">queue</span>=<span class="built_in">queue</span>;
-    }
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>{
-        <span class="keyword">try</span>{
-            mainLoop();
-            }finally{
-                synchronized(<span class="built_in">queue</span>){
-                    newTaskMayBeScheduled=<span class="literal">false</span>;
-                    <span class="built_in">queue</span>.clear();
-                }
-        }
-    }
-    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mainLoop</span><span class="params">()</span></span>{
-        <span class="keyword">while</span>(<span class="literal">true</span>){
-            <span class="keyword">try</span>{
-                TimerTask task;
-                boolean taskFired;
-                synchronized(<span class="built_in">queue</span>){
-                    <span class="keyword">while</span>(<span class="built_in">queue</span>.isEmpty()&amp;&amp;newTaskMayBeScheduled){
-                        <span class="built_in">queue</span>.wait();
-                    }
-                    <span class="keyword">if</span>(<span class="built_in">queue</span>.isEmpty())
-                        <span class="keyword">break</span>;
-                    <span class="keyword">long</span> currentTime,executionTime;
-                    task=<span class="built_in">queue</span>.getMin();
-                    synchronized(task.lock){
-                        <span class="keyword">if</span>(task.state==TimerTask.CANCELLED){
-                            <span class="built_in">queue</span>.removeMin();
-                            <span class="keyword">continue</span>;
-                        }
-                        currentTime=System.currentTimeMills();
-                        executionTime=task.nextExecutionTime();
-                        <span class="keyword">if</span>(taskFired=(executionTime&lt;=currentTime)){
-                            <span class="keyword">if</span>(task.period==<span class="number">0</span>){
-                                <span class="built_in">queue</span>.removeMin();
-                                task.state=TimerTask.EXECUTED;
-                            }<span class="keyword">else</span>{
-                                <span class="built_in">queue</span>.rescheduleMin(task.period&lt;<span class="number">0</span>?currentTIme-task.period:executionTime+task.period);
-                            }
-                        }
-                    }
-                    <span class="keyword">if</span>(!taskFired){
-                        <span class="built_in">queue</span>.wait(executionTime-currentTime);
-                    }
-                }
-                <span class="keyword">if</span>(taskFired)
-                    task.run();
-            }<span class="keyword">catch</span>(InterruptedException e){
-            }
-        }
+        <span itemprop="articleBody"><h2 id="ThreadLocal">ThreadLocal</h2><p>为了解决多线程并发访问的问题，比较流行的做法是通过加锁等技术实现多线程访问的同步。而ThreadLocal从另一个角度给出了一种解决方案，就是多个线程不再访问公共的数据，而是每一个线程都有自己独一份的数据，因此再怎么修改也不会影响到其他线程。</p>
+<p>这种方法在有些情况下比较适用，比如数据库连接池用ThreadLocal来保存当前线程所使用的Connection，以保证事物的有效性。</p>
+<p>那么ThreadLocal是如何实现的呢？通过查看源码可以看到，在Thread的类生命中有如下一个threadlocalmap</p>
+<pre><code>ThreadLocal.ThreadLocalMap threadLocals = <span class="literal">null</span>;
+</code></pre><p>这个ThreadLocalMap是ThreadLocal的内部类，它的实现方式有点类似于HashMap。内部存储是由下面这个数组负责实现的</p>
+<pre><code><span class="keyword">private</span> <span class="built_in">Entry</span>[] table;
+</code></pre><p>Entry是ThreadLocalMap的一个内部类，就是ThreadLocalMap中数组元素的类型</p>
+<pre><code>static <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">WeakReference&lt;ThreadLocal&gt;</span> {</span>
+    <span class="type">Object</span> value;
+    <span class="type">Entry</span>(<span class="type">ThreadLocal</span> k, <span class="type">Object</span> v) {
+        <span class="keyword">super</span>(k);
+        value = v;
     }
 }
-</code></pre><p>Timer中有两个函数，schedule和scheduleAtFixedRate。他们的区别用语言描述不好描述也不直观，直接看源码。在上面TimerThread的mainLoop种，在取出执行时间最小的任务之后，在执行之前先计算这个任务下一次执行的时间，然后再把它重新扔进队列中。在此处计算下一次执行时间的时候，这两个方法加入的任务的计算方式是不一样的。</p>
-<ul>
-<li>由schedule添加的task，其下一次执行的计算时间是currentTime+period</li>
-<li>由scheduleAtFixedRate添加的task，其下一次执行的计算时间是executionTime+period</li>
-</ul>
-<p>我的代码中使用的是scheduleAtFixedRate函数，然而还是出现了delay的情况，说明时前面有的task执行的非常慢，导致后面的task全部delay了。</p>
+</code></pre><p>如此可以看到，这个Entry继承了WeakReference类，弱引用引用的是ThreadLocal，同时，这个ThreadLocal对象也用来当做一个Key区分Object。这个地方使用了弱引用，关于java中的弱引用以后再专门写点东西研究一下。</p>
+<p>到这里，可能已经有点晕了，其实看一下ThreadLocal的get和set实现基本就能理解这个地方到底是如何实现的了。</p>
+<pre><code><span class="keyword">public</span> T get() {
+    <span class="keyword">Thread</span> t = <span class="keyword">Thread</span><span class="built_in">.</span>currentThread();
+    ThreadLocalMap <span class="built_in">map</span> = getMap(t);
+    <span class="keyword">if</span> (<span class="built_in">map</span> != <span class="built_in">null</span>) {
+        ThreadLocalMap<span class="built_in">.</span>Entry e = <span class="built_in">map</span><span class="built_in">.</span>getEntry(this);
+        <span class="keyword">if</span> (e != <span class="built_in">null</span>)
+            <span class="keyword">return</span> (T)e<span class="built_in">.</span>value;
+    }
+    <span class="keyword">return</span> setInitialValue();
+}
+<span class="keyword">public</span> <span class="literal">void</span> <span class="built_in">set</span>(T value) {
+    <span class="keyword">Thread</span> t = <span class="keyword">Thread</span><span class="built_in">.</span>currentThread();
+    ThreadLocalMap <span class="built_in">map</span> = getMap(t);
+    <span class="keyword">if</span> (<span class="built_in">map</span> != <span class="built_in">null</span>)
+        <span class="built_in">map</span><span class="built_in">.</span><span class="built_in">set</span>(this, value);
+    <span class="keyword">else</span>
+        createMap(t, value);
+}
+</code></pre><p>这个ThreadLocal操作Thread线程自己的ThreadLocalMap来get和set数据，同时ThreadLocal把自己当作Key。</p>
+<p>这个ThreadLocal其实是用空间来换时间的一种思路，使用它会使得内存占用更多的空间。不应该用ThreadLocal存储很大的数据，否则在线程很多的情况下，会大量占用内存，导致jvm gc频繁发生，使得系统的响应变慢很多。</p>
 </span>
       
     </div>
@@ -361,17 +306,13 @@ Corresponding to each Timer object is a single background thread th">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/28/20151128vi/" rel="next" title="vi">
-                <i class="fa fa-chevron-left"></i> vi
+              <a href="/2016/03/10/20160310-micro-service/" rel="next" title="micro service">
+                <i class="fa fa-chevron-left"></i> micro service
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/02/28/20160228-pyqt-install-and-homebrew-use/" rel="prev" title="pyqt安装和homebrew使用">
-                pyqt安装和homebrew使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -485,7 +426,7 @@ Corresponding to each Timer object is a single background thread th">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Timer_java"><span class="nav-number">1.</span> <span class="nav-text">Timer java</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">1.</span> <span class="nav-text">ThreadLocal</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="git," />
+  <meta name="keywords" content="algorithm," />
 
 
 
@@ -51,20 +51,22 @@
 
 
 
-<meta name="description" content="A successful git branching model最近组里刚刚从svn迁移到了git，本以为自己对于git已经有足够的了解了，没想到真正与团队协作开发的时候还是碰到了一些问题，于是还是上网查了一些资料，继续学习。本文实际上是一篇A successful git branching model的学习笔记。
-不是说一定要完全按照这篇文章作者所描述的那样使用git，只是这篇文章是提供了一套">
+<meta name="description" content="剑指offer最近无聊，想把丢弃了很久的算法再捡起来，随便找了个网站，发现上面有剑指offer的题，就做了一些。
+题目：把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
+我的思路">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20160717-a-successful-git-branching-model">
-<meta property="og:url" content="http://wyssurvivor.github.io/2016/07/17/20160717-a-successful-git-branching-model/index.html">
+<meta property="og:title" content="20160729-offer006">
+<meta property="og:url" content="http://wyssurvivor.github.io/2016/07/30/20160729-offer006/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="A successful git branching model最近组里刚刚从svn迁移到了git，本以为自己对于git已经有足够的了解了，没想到真正与团队协作开发的时候还是碰到了一些问题，于是还是上网查了一些资料，继续学习。本文实际上是一篇A successful git branching model的学习笔记。
-不是说一定要完全按照这篇文章作者所描述的那样使用git，只是这篇文章是提供了一套">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/git-model@2x.png">
-<meta property="og:updated_time" content="2016-07-17T07:09:26.000Z">
+<meta property="og:description" content="剑指offer最近无聊，想把丢弃了很久的算法再捡起来，随便找了个网站，发现上面有剑指offer的题，就做了一些。
+题目：把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
+我的思路">
+<meta property="og:updated_time" content="2016-07-30T08:09:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="20160717-a-successful-git-branching-model">
-<meta name="twitter:description" content="A successful git branching model最近组里刚刚从svn迁移到了git，本以为自己对于git已经有足够的了解了，没想到真正与团队协作开发的时候还是碰到了一些问题，于是还是上网查了一些资料，继续学习。本文实际上是一篇A successful git branching model的学习笔记。
-不是说一定要完全按照这篇文章作者所描述的那样使用git，只是这篇文章是提供了一套">
+<meta name="twitter:title" content="20160729-offer006">
+<meta name="twitter:description" content="剑指offer最近无聊，想把丢弃了很久的算法再捡起来，随便找了个网站，发现上面有剑指offer的题，就做了一些。
+题目：把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
+我的思路">
 
 
 
@@ -76,7 +78,7 @@
   };
 </script>
 
-  <title> 20160717-a-successful-git-branching-model | Ryan Wang </title>
+  <title> 20160729-offer006 | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -206,7 +208,7 @@
             
             
               
-                20160717-a-successful-git-branching-model
+                20160729-offer006
               
             
           </h1>
@@ -215,8 +217,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-07-17T13:48:48+08:00" content="2016-07-17">
-              2016-07-17
+            <time itemprop="dateCreated" datetime="2016-07-30T15:55:51+08:00" content="2016-07-30">
+              2016-07-30
             </time>
           </span>
 
@@ -225,8 +227,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
                   </a>
                 </span>
 
@@ -254,67 +256,53 @@
       
 
       
-        <span itemprop="articleBody"><h2 id="A_successful_git_branching_model">A successful git branching model</h2><p>最近组里刚刚从svn迁移到了git，本以为自己对于git已经有足够的了解了，没想到真正与团队协作开发的时候还是碰到了一些问题，于是还是上网查了一些资料，继续学习。本文实际上是一篇<a href="http://nvie.com/posts/a-successful-git-branching-model/#creating-a-feature-branch" target="_blank" rel="external">A successful git branching model</a>的学习笔记。</p>
-<p>不是说一定要完全按照这篇文章作者所描述的那样使用git，只是这篇文章是提供了一套挺完备的开发流程，能够引起我对于自己日常使用git的一些思考。根据这篇文章的介绍的branching经验方法，结合自己的实际情况，应该能够总结出一套更好的也是更适合自己的开发流程。</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/git-model@2x.png" alt="branching pic"></p>
-<p>上图基本上就是这个branching model的一个总览图，其中的思想基本上都在里面了。下面详细说明一下。</p>
-<h3 id="main_branches">main branches</h3><p>在远程仓库中，有两条分支是始终存在的</p>
-<ul>
-<li>origin/master</li>
-<li>origin/develop</li>
-</ul>
-<p>origin/master分支始终处于可上线状态或者已上线状态。origin／develop分支包含了开发者最新的修改。如果develop分支的代码都没有问题了，就可以合并到master分支了，真正合并的时候没这么简单，下面再说。</p>
-<h3 id="supporting_branches">supporting branches</h3><p>为了协助团队成员间的并行开发、特性分支纪录、代码上线和快速bugfix，提供了supporting branches。所不同的是，这些分支并不是一直存在的，只要完成使命，就会被删掉。</p>
-<ul>
-<li>feature branches</li>
-<li>release branches</li>
-<li>hotfix branches</li>
-</ul>
-<p>这些分支都有其特殊的用途。</p>
-<h4 id="feature_branches">feature branches</h4><p>May branch off from：develop</p>
-<p>Must merge back into：develop</p>
-<p>Branch naming convention:anything except master, develop, release-, or hotfix-</p>
-<p>feature branches 是用来开发新功能的分支。当开发一个新功能时，开发者不确定什么时候能够上线。feature branches可以一直存在，直到代码提交被合并到develop或者丢弃。feature braches通常情况下只存在于开发者的本地代码库中，而不在远程库中。</p>
-<p>feature branch的创建</p>
-<pre><code>git checkout －<span class="tag">b</span> myfeature develop
-</code></pre><p>在myfeature分支开发完成后，合并到develop分支，然后推送到远程库origin／develop中</p>
-<pre><code>git checkout develop <span class="comment">//切换本地分支</span>
-git <span class="keyword">merge</span> --<span class="keyword">no</span>-ff myfeature <span class="comment">//在本地进行合并操作</span>
-git branch -<span class="keyword">d</span> myfeature <span class="comment">//删除myfeature分支</span>
-git push origin develop <span class="comment">//推送到origin/develop</span>
-</code></pre><p>–no-ff 是取消fast forward的意思，强制在合并的时候生成一个新的commit，即使在能够fast forword的情况下。这样能够防止丢失feature branch的信息，因为后面会删除这个feature branch，如果使用了fast forward，那么feature branch的信息就没了。</p>
-<h4 id="release_branches">release branches</h4><p>May branch off from:develop</p>
-<p>Must merge back into:develop &amp; master</p>
-<p>Branch naming convention: release-*</p>
-<p>release branch是为了协助代码上线的分支，可以在此分支上做测试、修复bug、该metadata信息等。</p>
-<p>创建release branch</p>
-<pre><code>git checkout -<span class="tag">b</span> release-<span class="number">1.2</span> develop
-./bump-version<span class="class">.sh</span> <span class="number">1.2</span>
-git commit -<span class="tag">a</span> -m <span class="string">"Bumped version number to 1.2"</span>
-</code></pre><p>在这里可以做一些bug修复等小工作，不适合做包含大量代码修改的工作。当代码修改完毕并通过测试的时候，这时的代码已经可以上线了，先把代码合并到master分支，然后合并到develop分支</p>
-<pre><code>git checkout <span class="keyword">master</span>
-<span class="title">git</span> merge --no-ff release-<span class="number">1.2</span>
-git <span class="keyword">tag</span> <span class="title">-a</span> <span class="number">1.2</span>
-git checkout develop
-git merge --no-ff release-<span class="number">1.2</span>
-git branch -d release-<span class="number">1.2</span>
-</code></pre><h4 id="hotfix_branches">hotfix branches</h4><p>May branch off from:master</p>
-<p>Must merge back into:develop&amp;master</p>
-<p>Branch naming convention:hotfix-* </p>
-<p>我的理解是hotfix branch的作用是可以进行紧急bug修复。创建一个hotfix branch</p>
-<pre><code>git checkout -<span class="tag">b</span> hotfix-<span class="number">1.2</span>.<span class="number">1</span> master
-./bump-version<span class="class">.sh</span> <span class="number">1.2</span>.<span class="number">1</span>
-git commit -<span class="tag">a</span> -m <span class="string">"Bumped version number to 1.2.1"</span>
-</code></pre><p>像release branch一样，修复完bug之后，把commit合并到master和develop</p>
-<pre><code>git checkout master
-git merge --no-ff hotfix-<span class="number">1.2</span><span class="number">.1</span>
-git tag -a <span class="number">1.2</span><span class="number">.1</span>
-git checkout develop
-git merge --no-ff hotfix-<span class="number">1.2</span><span class="number">.1</span>
-git branch -d hotfix-<span class="number">1.2</span><span class="number">.1</span>
-</code></pre><p>需要注意的是，如果此时有release branch，应该合并commit到release branch而不是develop branch</p>
-<p>大体上这篇文章的内容就是这样。当我写到这里的时候，我发现我们组的实际情况其实是与这些有些冲突的，因此到底该怎么做，还是要做一番思考的。</p>
-</span>
+        <span itemprop="articleBody"><h2 id="剑指offer">剑指offer</h2><p>最近无聊，想把丢弃了很久的算法再捡起来，随便找了个网站，发现上面有剑指offer的题，就做了一些。</p>
+<p>题目：把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。<br>输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。<br>例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。<br>NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。</p>
+<p>我的思路：我的思路很简单，找到中位数，判断中位数是在哪个部分，然后缩小范围，到相应的范围去查找。代码如下：</p>
+<pre><code><span class="function"><span class="keyword">int</span> <span class="title">minNumberInRotateArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rotateArray)</span></span>{
+<span class="keyword">if</span>(rotateArray.size()==<span class="number">1</span>){
+    <span class="keyword">return</span> rotateArray[<span class="number">0</span>];
+}
+<span class="keyword">if</span>(rotateArray.size()==<span class="number">2</span>){
+    <span class="keyword">return</span> rotateArray[<span class="number">0</span>]&gt;rotateArray[<span class="number">1</span>]?rotateArray[<span class="number">1</span>]:rotateArray[<span class="number">0</span>];
+}
+<span class="keyword">int</span> left=<span class="number">0</span>;
+<span class="keyword">int</span> right=rotateArray.size()-<span class="number">1</span>;
+<span class="keyword">int</span> mid=(left+right)/<span class="number">2</span>;
+<span class="keyword">if</span>(rotateArray[left]&gt;rotateArray[mid]){
+    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; leftVec(rotateArray.begin(),rotateArray.begin()+mid+<span class="number">1</span>);
+    <span class="keyword">return</span> minNumberInRotateArray(leftVec);
+}<span class="keyword">else</span> <span class="keyword">if</span>(rotateArray[mid]&gt;rotateArray[right]){
+    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rightVec(rotateArray.begin()+mid,rotateArray.end());
+    <span class="keyword">return</span> minNumberInRotateArray(rightVec);
+}<span class="keyword">else</span>{
+    <span class="keyword">return</span> rotateArray[mid];
+}
+
+}
+</code></pre><p>这一题《剑指offer》上的思路是这样的，也是二分法查找，然而是缩小两边两个指针的位置来确定最终的那个数的位置在哪。思路上应该是比我的思路要简单，我的思路在到范围缩小到只有两个数的时候，处理的比较机械，不能把它归到一个统一的思路下，不够优美。而且，我用的是递归的方法，算法跑起来应该会相对慢一些，启示不用递归也能做，就是懒，用了递归。</p>
+<pre><code><span class="function"><span class="keyword">int</span> <span class="title">minNumberInRotateArray2</span><span class="params">(<span class="keyword">int</span> *numbers,<span class="keyword">int</span> length)</span></span>{
+<span class="keyword">if</span>(numbers==<span class="literal">NULL</span>||length&lt;=<span class="number">0</span>){
+    <span class="keyword">throw</span> <span class="keyword">new</span> exception(<span class="string">"Invalid parametes"</span>);
+}
+<span class="keyword">int</span> index1=<span class="number">0</span>;
+<span class="keyword">int</span> index2=length-<span class="number">1</span>;
+<span class="keyword">int</span> indexMid=index1;
+<span class="keyword">while</span> (numbers[index1]&gt;=numbers[index2]) {
+    <span class="keyword">if</span>(index2-index1==<span class="number">1</span>){
+        indexMid=index2;
+        <span class="keyword">break</span>;
+    }
+    indexMid=(index1+index2)/<span class="number">2</span>;
+    <span class="keyword">if</span>(numbers[indexMid]&gt;=numbers[index1]){
+        index1=indexMid;
+    }<span class="keyword">else</span> <span class="keyword">if</span>(numbers[indexMid]&lt;=numbers[index2]){
+        index2=indexMid;
+    }
+}
+<span class="keyword">return</span> numbers[indexMid];
+}
+</code></pre></span>
       
     </div>
 
@@ -322,7 +310,7 @@ git branch -d hotfix-<span class="number">1.2</span><span class="number">.1</spa
       
         <div class="post-tags">
           
-            <a href="/tags/git/" rel="tag">#git</a>
+            <a href="/tags/algorithm/" rel="tag">#algorithm</a>
           
         </div>
       
@@ -331,17 +319,13 @@ git branch -d hotfix-<span class="number">1.2</span><span class="number">.1</spa
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/09/20160709-java-dynamic-proxy/" rel="next" title="20160709-java-dynamic-proxy">
-                <i class="fa fa-chevron-left"></i> 20160709-java-dynamic-proxy
+              <a href="/2016/07/17/20160717-a-successful-git-branching-model/" rel="next" title="20160717-a-successful-git-branching-model">
+                <i class="fa fa-chevron-left"></i> 20160717-a-successful-git-branching-model
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/30/20160729-offer006/" rel="prev" title="20160729-offer006">
-                20160729-offer006 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -455,7 +439,7 @@ git branch -d hotfix-<span class="number">1.2</span><span class="number">.1</spa
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#A_successful_git_branching_model"><span class="nav-number">1.</span> <span class="nav-text">A successful git branching model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#main_branches"><span class="nav-number">1.1.</span> <span class="nav-text">main branches</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#supporting_branches"><span class="nav-number">1.2.</span> <span class="nav-text">supporting branches</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#feature_branches"><span class="nav-number">1.2.1.</span> <span class="nav-text">feature branches</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#release_branches"><span class="nav-number">1.2.2.</span> <span class="nav-text">release branches</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hotfix_branches"><span class="nav-number">1.2.3.</span> <span class="nav-text">hotfix branches</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#剑指offer"><span class="nav-number">1.</span> <span class="nav-text">剑指offer</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

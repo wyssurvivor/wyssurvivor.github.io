@@ -210,6 +210,130 @@
             
               
                 
+                <a class="post-title-link" href="/2015/11/25/20151125Date-In-Java/" itemprop="url">
+                  Date-In-Java
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-11-25T01:07:01+08:00" content="2015-11-25">
+              2015-11-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h3 id="java_中的时间">java 中的时间</h3><p>最近接了一个任务，在快要上线的时候发现完全没有考虑到时区的问题（国际业务开发的任务），当我要改的时候，发现对于标准时间，北京时间等等的东西很陌生，觉得很混乱，因此晚上回到家就想要把他弄明白。</p>
+<h4 id="基本概念">基本概念</h4><p>首先是基本概念</p>
+<ul>
+<li>时区：初中地理学过，北京处于东八区，因此使用的是东八区的时间。</li>
+<li>CST:china standard time utc+8:00 中国标准时间</li>
+<li>UTC:Universal Time Coordinated 世界协调时间，这是标准时间与时区无关的时间。在0时区</li>
+<li>GMT:格林威治标准时间</li>
+<li>Unix timestamp:unix时间戳，从格林威治时间1970年1月1日0时00分00秒起至现在的总秒数。</li>
+<li>utc和gmt基本是一致的，gmt=utc,gmt+8=utc+8=cst</li>
+</ul>
+<h4 id="java中的时间">java中的时间</h4><p>现在我理解的Date表示的是一个时间点，据格林威治时间到现在的毫秒数，是与时区和locale都没有关系的一个概念。因此，在数据库里存储的时候一般是存储这个与时区没有关系的毫秒数。然后在需要显示时间的地方再根据时区设置转换成相应的时间格式。</p>
+<pre><code><span class="built_in">Date</span> <span class="built_in">date</span>=<span class="literal">new</span> <span class="built_in">Date</span>();
+SimpleDateFormat sdf7=<span class="literal">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);
+sdf7<span class="built_in">.</span>setTimeZone(TimezZone<span class="built_in">.</span>getTimeZone(<span class="string">"GMT+7"</span>));
+<span class="built_in">String</span> strDate=sdf7<span class="built_in">.</span>format(<span class="built_in">date</span>);
+</code></pre><p>在java中有两种获取标准时间毫秒时的方法</p>
+<ul>
+<li>System.getCurrentTimeMills()</li>
+<li>Date.getTime()</li>
+</ul>
+<pre><code><span class="built_in">Date</span> <span class="built_in">date</span>=<span class="literal">new</span> <span class="built_in">Date</span>();
+</code></pre><p>表示的是当前时间点，与时区无关。</p>
+<pre><code>SimpleDateFormat sdf=<span class="literal">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);
+sdf7<span class="built_in">.</span>setTimeZone(TimezZone<span class="built_in">.</span>getTimeZone(<span class="string">"GMT+7"</span>));
+<span class="built_in">String</span> strDate=sdf7<span class="built_in">.</span>format(<span class="built_in">date</span>);
+</code></pre><p>当要转换成可读的时间表示时，必须与时间挂钩。SimpleDateFormat可以完成这个转换，如果没有设置时区就去本地系统默认的时区。</p>
+<pre><code>Calendar calendar=Calendar.getInstance()<span class="comment">;</span>
+Date d=calendar.getTime()<span class="comment">;</span>
+</code></pre><p>Calendar是基于时区的，但从Calendar获得的Date时没有时区的。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/11/24/20151124HA-AND-REPLICATION/" itemprop="url">
                   HA-AND-REPLICATION
                 </a>
@@ -821,14 +945,14 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>

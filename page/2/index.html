@@ -210,6 +210,295 @@
             
               
                 
+                <a class="post-title-link" href="/2015/11/28/20151128vi/" itemprop="url">
+                  vi
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-11-28T00:01:46+08:00" content="2015-11-28">
+              2015-11-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="vi">vi</h2><p>vi共有三种模式</p>
+<ul>
+<li>一般模式，用vi打开文件时就处于一般模式下，可以移动光标，做删除复制粘贴等操作</li>
+<li>编辑模式，实际编辑文本</li>
+<li>命令模式，输入命令做一些操作，例如查找、存储、推出等功能。</li>
+</ul>
+<p>这三种模式的转换如下图</p>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/vi_mode.001.png" alt="模式转换图"></p>
+<h3 id="一般模式下的操作">一般模式下的操作</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h</td>
+<td>左移</td>
+</tr>
+<tr>
+<td>j</td>
+<td>下移</td>
+</tr>
+<tr>
+<td>k</td>
+<td>上移</td>
+</tr>
+<tr>
+<td>l</td>
+<td>右移</td>
+</tr>
+<tr>
+<td>n [space]</td>
+<td>n表示数字，按下空格，光标移动到这一行的第n个字符</td>
+</tr>
+<tr>
+<td>0或［HOME］</td>
+<td>移动到一行的最前面</td>
+</tr>
+<tr>
+<td>$或［END］</td>
+<td>移动到一行的最后面</td>
+</tr>
+<tr>
+<td>H</td>
+<td>光标移动到屏幕最上面一行的第一个字符</td>
+</tr>
+<tr>
+<td>M</td>
+<td>光标移动到屏幕最中间一行的第一个字符</td>
+</tr>
+<tr>
+<td>L</td>
+<td>光标移动到屏幕最下面一行的第一个字符</td>
+</tr>
+<tr>
+<td>G</td>
+<td>光标移动到这个档案的最后一行</td>
+</tr>
+<tr>
+<td>nG</td>
+<td>光标移动到这个档案的第n行</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>光标移动到这个档案的第一行</td>
+</tr>
+<tr>
+<td>n [enter]</td>
+<td>光标向下移动n行</td>
+</tr>
+<tr>
+<td>/word</td>
+<td>向光标之下搜寻一个名称为word的字符串</td>
+</tr>
+<tr>
+<td>？word</td>
+<td>向光标之上搜寻一个名称为word的字符串</td>
+</tr>
+<tr>
+<td>n</td>
+<td>重复前一个搜寻的动作</td>
+</tr>
+<tr>
+<td>N</td>
+<td>反向进行前一个搜寻动作</td>
+</tr>
+<tr>
+<td>:n1,n2s/word1/word2/g</td>
+<td>在n1和n2行之间搜寻word1字符串，并把它替换为word2</td>
+</tr>
+<tr>
+<td>x</td>
+<td>在一行当中，向后删除一个字符</td>
+</tr>
+<tr>
+<td>X</td>
+<td>在一行当中，向前删除一个字符</td>
+</tr>
+<tr>
+<td>nx</td>
+<td>向后删除n个字符</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>删除一整行</td>
+</tr>
+<tr>
+<td>ndd</td>
+<td>向下删除n行</td>
+</tr>
+<tr>
+<td>yy</td>
+<td>复制光标所在的那一行</td>
+</tr>
+<tr>
+<td>nyy</td>
+<td>复制光标所在的向下的n行</td>
+</tr>
+<tr>
+<td>p</td>
+<td>粘贴</td>
+</tr>
+<tr>
+<td>u</td>
+<td>复原前一个动作</td>
+</tr>
+<tr>
+<td>[Ctrl]+r</td>
+<td>重做上一个动作</td>
+</tr>
+</tbody>
+</table>
+<h3 id="一般模式切换到编辑模式">一般模式切换到编辑模式</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i,I</td>
+<td>i为从光标所在的位置处插入，I为从光标所在行的第一个非空格处插入</td>
+</tr>
+<tr>
+<td>a,A</td>
+<td>a为从光标所在的下一个字符开始插入，A为葱光标所在行的最后一个字符处开始插入</td>
+</tr>
+<tr>
+<td>o,O</td>
+<td>o为从光标所在的下一行处插入新的一行，O为从光标所在处的上一行插入新的一行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="一般模式切换到指令模式">一般模式切换到指令模式</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:w,:w!</td>
+<td>写入硬盘，强制写入硬盘</td>
+</tr>
+<tr>
+<td>:q,:q!</td>
+<td>推出，强制退出</td>
+</tr>
+<tr>
+<td>:wq</td>
+<td>写入磁盘并推出</td>
+</tr>
+<tr>
+<td>ZZ</td>
+<td>若文件没有更新，则不存储离开，若更新了，就存储后离开</td>
+</tr>
+<tr>
+<td>:w [filename]</td>
+<td>将编辑的数据存储成另一个档案</td>
+</tr>
+<tr>
+<td>:r [filename]</td>
+<td>读入另一个档案</td>
+</tr>
+<tr>
+<td>:set nu</td>
+<td>显示行号</td>
+</tr>
+</tbody>
+</table>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/11/25/20151125Date-In-Java/" itemprop="url">
                   Date-In-Java
                 </a>
@@ -945,21 +1234,21 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

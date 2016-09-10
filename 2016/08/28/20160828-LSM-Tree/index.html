@@ -60,7 +60,7 @@
 <meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/Journal6.png">
 <meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/Journal31.png">
 <meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/Journal2.51.png">
-<meta property="og:updated_time" content="2016-08-28T13:13:35.000Z">
+<meta property="og:updated_time" content="2016-08-28T13:14:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="20160828-LSM-Tree">
 <meta name="twitter:description" content="LSM树与B＋树和ISAM相比，LSM树的架构设计拥有更好的写入性能。它通过消除原地更新操作来提高写入性能。其核心思想是，硬盘写入中的一个老问题，相比于随机写入，顺序写入更快。不管是机械硬盘还是固态硬盘，这种差距都存在。从这种现状出发，我们考虑一下：如果我们对写的吞吐量感兴趣，那么能够使用哪些方法？一个好的出发点是直接向文件后面添加数据。这种方法通常被称为打日志或者堆文件，它是完全的顺序写入的可以">
@@ -258,8 +258,9 @@
 <li>对于按key顺序存储的文件</li>
 <li>hash，把数据通过hash函数分到不同的篮子中，之后可以直接访问这些数据。</li>
 <li>B＋，使用可查询文件组织如B＋树或者ISAM</li>
-<li>外部文件，数据存储在log中，并且另外创建索引加速读取。<br>上面这些方式能够提高读的性能，然而由于加入了一些顺序，导致写的性能又下降了。<br>这其中有几个问题。每一次写操作需要两次io操作，一次读区页信息另一次是写入数据。这并不是如打日志一样，一次写入操作就可以完成。<br>更加糟糕的是，我们每次更新操作的时候都要更新hash或者index。更新这些信息意味着更新文件系统的其它部分。这些写入操作又是原地写入操作，是随机写。<br>一种可行的方式是把索引写入日志，并且保存在内存中。<br>另外一方面这个方案还存在扩展性问题，特别是如果你有很多小数据。如果你的数据是一些简单的数字那么索引将会比数据本身还要大。现在有很多产品一经对这一问题妥协了。<br>因此，就出现了LSM树，LSM树以另外一种方式使用上面的四种优化措施。它是完全以硬盘为中心的，需要一些额外的内存来提高效率。其写入的性能还是依靠日志的方式保证的。它的缺点时，相较于B＋树，读性能还是稍微弱了一点。<br><img src="http://7xojgs.com1.z0.glb.clouddn.com/Journal6.png" alt="lsm tree"></li>
+<li>外部文件，数据存储在log中，并且另外创建索引加速读取。</li>
 </ul>
+<p>上面这些方式能够提高读的性能，然而由于加入了一些顺序，导致写的性能又下降了。<br>这其中有几个问题。每一次写操作需要两次io操作，一次读区页信息另一次是写入数据。这并不是如打日志一样，一次写入操作就可以完成。<br>更加糟糕的是，我们每次更新操作的时候都要更新hash或者index。更新这些信息意味着更新文件系统的其它部分。这些写入操作又是原地写入操作，是随机写。<br>一种可行的方式是把索引写入日志，并且保存在内存中。<br>另外一方面这个方案还存在扩展性问题，特别是如果你有很多小数据。如果你的数据是一些简单的数字那么索引将会比数据本身还要大。现在有很多产品一经对这一问题妥协了。<br>因此，就出现了LSM树，LSM树以另外一种方式使用上面的四种优化措施。它是完全以硬盘为中心的，需要一些额外的内存来提高效率。其写入的性能还是依靠日志的方式保证的。它的缺点时，相较于B＋树，读性能还是稍微弱了一点。<br><img src="http://7xojgs.com1.z0.glb.clouddn.com/Journal6.png" alt="lsm tree"></p>
 <h3 id="基本的LSM算法">基本的LSM算法</h3><p>LSM树的理论非常简单。它并不是用一个大的索引结构存储，而是用一些小的索引文件顺序的存储一批写入操作。所以，每个文件包含在一个时间段内的一批修改。每个文件。每个文件都是排序的，因此后面的搜索会很快。这些文件是不可修改的。新的修改会被写入到新的文件中。读操作会检查所有的文件。这些文件会周期性的做合并操作以降低文件的总量。<br>让我们看一下细节。当有写入操作到来时，被加入到内存中的一段缓存去中，这个区域通常使用树（红黑树等）来实现，以保证key的有序性。在写入这个内存表之前，写入操作会先被添加到一个预写日志的末尾，用来从系统崩溃中恢复。当这个缓冲区满了之后，这些排序后的数据会被写道硬盘上的一个文件中。这个过程随着写入操作的到来不断重复着。因为这些文件不能被修改，因此，整个系统是顺序写入的。<br>所以，随着越来越多的数据存储到系统中，会产生越来越多的不可修改的，排序的文件被创建。每一个代表了一些更改的小集合。<br>因为老的文件不会被更新，多余的项背创建以覆盖老的数据。这产生了一些冗余。<br>系统中骑行的做压缩操作。压缩操作时会选择一些文件并把它们合并成一个文件，把多余的更新和删除指令丢弃。这个压缩操作能够消除前面提到的冗余，更重要的是，能够使读的性能保持良好。因为每个文件都是排序好的，因此这个合并过程非常快。<br>当一个读请求到来时，系统首先检查内存表。如果在内存表中没找到key，系统会一个一个的检查硬盘上的文件，以逆时间顺序，直到key被找到。每个文件是有序的，因此是可查询的。然而，读操作会随着文件个数的增长变的越来越慢，因为每个文件都会被检索一边。<br>所以，LSM树的读性能弱一些。幸运的是，有一些优化方法能够改善读的性能。最常见的方法是在内存中建立索引，可以更快的接近查询的key。LevelDB，RocksDB和BigTable在每个文件后面加索引。这种方式比直接二分搜索要快。<br>即使在每个文件中加索引，读操作依然会随着文件的增多而变的缓慢。这可以通过定期的合并操作解决。这种压缩操作能够控制文件数量，搓耳控制读的性能在可接受的范围内。<br>即使压缩文件，读操作依然需要访问很多文件。大部分的实现会使用bloom filter提高性能。<br>所以，从写的角度来看，所有的写操作被聚合在一起并被顺序的写入到一些块中。<br><img src="http://7xojgs.com1.z0.glb.clouddn.com/Journal31.png" alt="lsm tree"></p>
 <h3 id="Compaction">Compaction</h3><p>为了控制LSM树的读性能，减少文件的个数是恨重要的。压缩的过程优点类似于垃圾收集的过程。<br>当一定数量的文件被创建之后，例如5个文件，每个文件10行，它们被合并到一个文件中，50行。<br>最终有5个50行的文件，这是，这5个文件被合并成一个文件。这个过程一只持续下去产生越来越大的文件<br><img src="http://7xojgs.com1.z0.glb.clouddn.com/Journal2.51.png" alt="lsm tree"></p>
 <h3 id="Levelled_Compaction">Levelled Compaction</h3><p>新的实现方式，如LevelDB、RocksDB和Cassandra，使用分层的文件压缩解决这个问题。这降低了文件的数量并且降低了一次压缩的影响范围。<br>这个level－based方法有连个改进：</p>
@@ -291,6 +292,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/10/20160910-docker/" rel="prev" title="20160910-docker">
+                20160910-docker <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -358,7 +363,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -372,7 +377,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

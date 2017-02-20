@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="homebrew,python," />
+  <meta name="keywords" content="develop," />
 
 
 
@@ -51,18 +51,19 @@
 
 
 
-<meta name="description" content="最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，">
+<meta name="description" content="协程 coroutine最近频繁的听说到 “协程” 这个词，花了一段时间肤浅的研究了一下。对于 “它是一个什么东西” 有了一个大概的了解。
+from wiki    Coroutines are computer program components that generalize subroutines for non-preemptive multitasking, by allowing m">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pyqt安装和homebrew使用">
-<meta property="og:url" content="http://wyssurvivor.github.io/2016/02/28/20160228-pyqt-install-and-homebrew-use/index.html">
+<meta property="og:title" content="20170220-coroutine">
+<meta property="og:url" content="http://wyssurvivor.github.io/2017/02/20/20170220-coroutine/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.11.30.png">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.36.19.png">
-<meta property="og:updated_time" content="2016-02-28T07:12:55.000Z">
+<meta property="og:description" content="协程 coroutine最近频繁的听说到 “协程” 这个词，花了一段时间肤浅的研究了一下。对于 “它是一个什么东西” 有了一个大概的了解。
+from wiki    Coroutines are computer program components that generalize subroutines for non-preemptive multitasking, by allowing m">
+<meta property="og:updated_time" content="2017-02-20T13:59:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pyqt安装和homebrew使用">
-<meta name="twitter:description" content="最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，">
+<meta name="twitter:title" content="20170220-coroutine">
+<meta name="twitter:description" content="协程 coroutine最近频繁的听说到 “协程” 这个词，花了一段时间肤浅的研究了一下。对于 “它是一个什么东西” 有了一个大概的了解。
+from wiki    Coroutines are computer program components that generalize subroutines for non-preemptive multitasking, by allowing m">
 
 
 
@@ -74,7 +75,7 @@
   };
 </script>
 
-  <title> pyqt安装和homebrew使用 | Ryan Wang </title>
+  <title> 20170220-coroutine | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -204,7 +205,7 @@
             
             
               
-                pyqt安装和homebrew使用
+                20170220-coroutine
               
             
           </h1>
@@ -213,8 +214,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-02-28T14:39:31+08:00" content="2016-02-28">
-              2016-02-28
+            <time itemprop="dateCreated" datetime="2017-02-20T21:26:36+08:00" content="2017-02-20">
+              2017-02-20
             </time>
           </span>
 
@@ -223,8 +224,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index">
-                    <span itemprop="name">tech</span>
+                  <a href="/categories/develop/" itemprop="url" rel="index">
+                    <span itemprop="name">develop</span>
                   </a>
                 </span>
 
@@ -252,14 +253,13 @@
       
 
       
-        <span itemprop="articleBody"><p>最近想要自己写两个桌面应用，因为涉及到机密信息，放到网上总归是不保险的，不论各种软件把自己吹的多安全，可是还是不能完全放心。在这种情况下，作为一个攻城狮程序猿，不如自己开发一个软件，对于自己的机密信息自己写加密算法加密，保证没有人能够解开。然而问题来了，我对苹果那一套开发语言和技术框架，并且现在也不想去过多的学习这方面的内容。因此就想用pyqt吧，因为python写个软件应该是很顺手的。人生苦短，我用python嘛。然后就装pyqt，使用homebrew安装非常的简单，如果想要源代码安装，也不难，但我还是不想浪费时间。</p>
-<pre><code><span class="keyword">brew </span>install pyqt
-</code></pre><p>homebrew会把pyqt依赖的东西一并下载安装，qt和sip。安装完成，发现报错。</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.11.30.png" alt="homebrew error"></p>
-<p>如上图，执行link qt的时候出错，对于homebrew使用并不熟练的我就去google了一下，在<a href="http://stackoverflow.com/questions/27784545/brew-error-could-not-symlink-path-is-not-writable" target="_blank" rel="external">stack overflow</a>上发现了解决方法。使用</p>
-<pre><code><span class="keyword">brew </span>doctor
-</code></pre><p>命令，可以看到homebrew给出的解决方法，按照提示，就可以修正error了。</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-02-28%20%E4%B8%8B%E5%8D%882.36.19.png" alt="error correct"></p>
+        <span itemprop="articleBody"><h2 id="协程_coroutine">协程 coroutine</h2><p>最近频繁的听说到 “协程” 这个词，花了一段时间肤浅的研究了一下。对于 “它是一个什么东西” 有了一个大概的了解。</p>
+<p>from wiki<br>    Coroutines are computer program components that generalize subroutines for non-preemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations. Coroutines are well-suited for implementing more familiar program components such as cooperative tasks, exceptions, event loop, iterators, infinite lists and pipes.</p>
+<p>协程是一种为了实现非抢占式多任务的程序组件，它会有多个进入点，在这些进入点可以挂起休眠和恢复执行。协程非常适合用来实现我们常见的一些程序组件，例如协作式任务、异常、事件循环、迭代器、无限列表和管道。</p>
+<p>在我的理解中，协程本质上是一些程序的执行序列，它允许开发者使用它实现多任务协作完成某件事情。只是，与使用线程不同的是，在使用线程完成多任务开发时，会有多个线程分享cpu时间、在线程切换的时候会有上下文相关的操作，而且，在线程之间需要加锁来处理线程的竞态问题。<br>反观协程，自始至终只有一个协程存在，就算有其他协程也是出于休眠状态。协程在执行完一部分程序之后，可以切换到另外一个协程执行程序，而这个切换非常的轻量级。协程只能主动放弃执行把执行权给指定的协程，而不能被抢占，因此它是一个非抢占式的。这样意味着，有别于线程的是，协程的执行顺序是完全已知的并且可控的。</p>
+<p>线程是操作系统的一个概念，而协程是基于程序语言实现的特性，因此是用户态的。因此，实际上，协程是一种用户态的线程，相当于你在现有程序语言的基础上，自己开发一套，实现程序的调度。</p>
+<p>前面也说到，既然是切换，程序执行的状态需要记录下来，协程在实现的时候需要一块特殊的内存地址范围存放信息，c语言中有类似的机制setjump／longjump和ucontext。太过于底层，可以在参考文献中查看。</p>
+<p>以上仅仅是我自己的理解</p>
 </span>
       
     </div>
@@ -268,9 +268,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/homebrew/" rel="tag">#homebrew</a>
-          
-            <a href="/tags/python/" rel="tag">#python</a>
+            <a href="/tags/develop/" rel="tag">#develop</a>
           
         </div>
       
@@ -279,17 +277,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/05/20151205Timer/" rel="next" title="Timer">
-                <i class="fa fa-chevron-left"></i> Timer
+              <a href="/2016/09/10/20160910-docker/" rel="next" title="20160910-docker">
+                <i class="fa fa-chevron-left"></i> 20160910-docker
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/06/20160306-message-queue-system-of-xiecheng/" rel="prev" title="携程消息系统学习笔记1">
-                携程消息系统学习笔记1 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -403,7 +397,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#协程_coroutine"><span class="nav-number">1.</span> <span class="nav-text">协程 coroutine</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

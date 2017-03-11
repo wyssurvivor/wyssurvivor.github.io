@@ -210,6 +210,121 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/06/20160306-message-queue-system-of-xiecheng/" itemprop="url">
+                  携程消息系统学习笔记1
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-06T22:06:12+08:00" content="2016-03-06">
+              2016-03-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
+                    <span itemprop="name">distributed system</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>message queue具有广泛的使用场景，在国内的各大厂商内部也多有应用。例如，使用消息队列做索引实时更新和支付等。</p>
+<h2 id="MQ的特点">MQ的特点</h2><ul>
+<li>降低系统耦合程度，使得系统业务可以做异步处理，同时有利于抵御流量波峰。</li>
+<li>使得系统易于扩展，系统的生产者和消费者可以通过消息队列协作，灵活添加。</li>
+</ul>
+<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-06%20%E4%B8%8B%E5%8D%8810.15.19.png" alt="系统架构图"></p>
+<p>如上图是主要的架构图。支持两种持久化方式，kafka和mysql，因为两者各有优缺点。kafka性能好，然而不支持复杂的操作，不好做监控。mysql性能不如kafka，然而却能让开发者做任何想做的事，易于做监控。</p>
+<h2 id="单机优化">单机优化</h2><p>主要从存入消息和读取消息两个方面做单机优化</p>
+<h3 id="存入消息">存入消息</h3><ul>
+<li>只有，insert,没有update or delete</li>
+<li>利用mysql的partition机制，分表，这样，对于过时的数据可以及时清理，这么做弥补了没有delete</li>
+<li>只根据id做索引，索引是一个很重的操作，很费时间，这里把时间减少到最小。</li>
+<li>批量写入，在broker受到写入消息后，不是马上写入，做个暂存，达到批量写入上限的时候一起写入。此处就要在性能和数据延迟之间做出取舍。</li>
+</ul>
+<p>对于重发操作，也有一些优化。在系统中有一个重发表，于消息表几乎一样，多了一个纪录重发时间的字段。问题是，如果加上这个重发时间，并且让用户自己设置任意的重发时间的话，会导致数据不是按重发时间书序排列的。如此，在做数据重发的时候，会遇到困难，可能每次都要做一些便利操作，费时，或者需要对id和重发时间两个属性做索引，也会大大增大索引时间。因此，此处不让用户随意去设置重发时间，而是设置一个固定的值，如此，数据会按顺序排列。</p>
+<h3 id="取出消息">取出消息</h3><ul>
+<li>broker捕获并纪录写入事件，不需要轮训db</li>
+<li>消息buffer，相当于做了一层缓存</li>
+<li>消费者既不用push也不用poll，而是使用long polling。当消费者想要数据的时候，向broker发送信息，broker直到有新的消息到来的时候立即返回新的消息，消费者的监听器受到消息。</li>
+</ul>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/02/28/20160228-pyqt-install-and-homebrew-use/" itemprop="url">
                   pyqt安装和homebrew使用
                 </a>
@@ -1517,21 +1632,21 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

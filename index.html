@@ -210,6 +210,111 @@
             
               
                 
+                <a class="post-title-link" href="/2017/03/11/20170311-fix-a-strange-problem/" itemprop="url">
+                  20170311-fix-a-strange-problem
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-03-11T23:34:19+08:00" content="2017-03-11">
+              2017-03-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/coding-life/" itemprop="url" rel="index">
+                    <span itemprop="name">coding life</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>去年为了我自己存储个人帐号密码的需要，就自己动手用pyqt写了一个mac上的app，用了存储我自己的用户名和密码。当时不用什么1password等app来存储这些信息是因为，作为一个程序员，我还是觉得自己写的app，所有东西都在我自己的掌控之下来的更有安全感一些。<br>然而，今晚出了点小麻烦，就当我想要打开这个app，记录一个我在某网站申请的帐号的时候，我发现这个app打不开了。macOS给的信息大致是这样的 “在打开sip.so的时候python报错”。WTF？黑人问好脸？苹果好歹也是个大厂，能不能在错误提示和汉语翻译这方面上点心。然后看详细的报错信息。。。还是放弃了，毕竟我是个很软的软件工程师，这种类似于汇编的东西实在是超出了我的能力范围。<br>于是就开始查是什么问题，由于苹果系统渣一样的错误提示，导致google不到有用的信息。于是就出google一下sip</p>
+<pre><code>SIP is <span class="operator">a</span> tool that makes <span class="keyword">it</span> very easy <span class="built_in">to</span> <span class="built_in">create</span> Python bindings <span class="keyword">for</span> C <span class="operator">and</span> C++ libraries. It was originally developed <span class="built_in">to</span> <span class="built_in">create</span> PyQt, <span class="operator">the</span> Python bindings <span class="keyword">for</span> <span class="operator">the</span> Qt toolkit, but can be used <span class="built_in">to</span> <span class="built_in">create</span> bindings <span class="keyword">for</span> <span class="keyword">any</span> C <span class="operator">or</span> C++ library.
+</code></pre><p>基本上就是说，sip能够使的python调用用C和C＋＋编写的程序库。想到PyQT应该是对QT的调用，想来也是需要这东西的。于是用homebrew查看了一下sip的安装信息</p>
+<pre><code>/usr/local/Cellar/sip/<span class="number">4.16</span><span class="number">.9</span> (<span class="number">10</span> files, <span class="number">858.9</span>KB)
+Poured from bottle on <span class="number">2015</span>-<span class="number">09</span>-<span class="number">14</span> at <span class="number">13</span>:<span class="number">31</span>:<span class="number">28</span>
+/usr/local/Cellar/sip/<span class="number">4.19</span> (<span class="number">12</span> files, <span class="number">941.6</span>KB) *
+Poured from bottle on <span class="number">2017</span>-<span class="number">03</span>-<span class="number">05</span> at <span class="number">15</span>:<span class="number">33</span>:<span class="number">39</span>
+</code></pre><p>居然有两个版本，我在前几天安装octave的时候曾经运行过brew upgrade命令，一定是在那个时候更新了sip，导致与现在的QT版本不兼容而报错了。那么怎么修复呢？继续google，发现homebrew果然是个神奇，运行switch命令，切换版本，大功告成，程序又可以正常运行了。</p>
+<pre><code>brew <span class="keyword">switch</span> sip <span class="number">4.16</span><span class="number">.1</span>
+</code></pre><p>在写这篇文章的时候，出现了同样的问题，hexo报错显示node版本不兼容，想都不用想，homebrew切换一下版本，搞定。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/02/20/20170220-coroutine/" itemprop="url">
                   20170220-coroutine
                 </a>
@@ -387,7 +492,7 @@
 <h5 id="Updating_and_committing_an_image">Updating and committing an image</h5><p>为了更新一个镜像，首先运行一个镜像<br>    docker run -ti training?sinatra /bin/bash</p>
 <p>在交互式的命令行中做修改更新：<br>    apt-get install -y ruby2.0-dev<br>    gem2.0 install json</p>
 <p>执行完毕之后使用exit退出。现在有一个你修改过的容器，你可以通过以下命令把该容器的一份拷贝生成镜像。<br>    docker commit -m “” -a “” container_id image_name</p>
-<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x78;&#120;&#x78;&#64;&#101;&#120;&#97;&#109;&#x70;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#x78;&#120;&#x78;&#64;&#101;&#120;&#97;&#109;&#x70;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
+<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x78;&#x78;&#x78;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#46;&#x63;&#111;&#109;">&#x78;&#x78;&#x78;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#46;&#x63;&#111;&#109;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
 <p>有了Dockerfile使用docker build创建镜像<br>    docker build -t container_name .</p>
 <p>通过输出可以个看到，docker 会顺序的一条一条的执行Dockerfile中的命令。每个命令会创建一个新的容器，执行指令并提交修改，就像docker commit的工作原理一样</p>
 
@@ -1419,121 +1524,6 @@ static {
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/06/20160306-message-queue-system-of-xiecheng/" itemprop="url">
-                  携程消息系统学习笔记1
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-06T22:06:12+08:00" content="2016-03-06">
-              2016-03-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
-                    <span itemprop="name">distributed system</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>message queue具有广泛的使用场景，在国内的各大厂商内部也多有应用。例如，使用消息队列做索引实时更新和支付等。</p>
-<h2 id="MQ的特点">MQ的特点</h2><ul>
-<li>降低系统耦合程度，使得系统业务可以做异步处理，同时有利于抵御流量波峰。</li>
-<li>使得系统易于扩展，系统的生产者和消费者可以通过消息队列协作，灵活添加。</li>
-</ul>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-06%20%E4%B8%8B%E5%8D%8810.15.19.png" alt="系统架构图"></p>
-<p>如上图是主要的架构图。支持两种持久化方式，kafka和mysql，因为两者各有优缺点。kafka性能好，然而不支持复杂的操作，不好做监控。mysql性能不如kafka，然而却能让开发者做任何想做的事，易于做监控。</p>
-<h2 id="单机优化">单机优化</h2><p>主要从存入消息和读取消息两个方面做单机优化</p>
-<h3 id="存入消息">存入消息</h3><ul>
-<li>只有，insert,没有update or delete</li>
-<li>利用mysql的partition机制，分表，这样，对于过时的数据可以及时清理，这么做弥补了没有delete</li>
-<li>只根据id做索引，索引是一个很重的操作，很费时间，这里把时间减少到最小。</li>
-<li>批量写入，在broker受到写入消息后，不是马上写入，做个暂存，达到批量写入上限的时候一起写入。此处就要在性能和数据延迟之间做出取舍。</li>
-</ul>
-<p>对于重发操作，也有一些优化。在系统中有一个重发表，于消息表几乎一样，多了一个纪录重发时间的字段。问题是，如果加上这个重发时间，并且让用户自己设置任意的重发时间的话，会导致数据不是按重发时间书序排列的。如此，在做数据重发的时候，会遇到困难，可能每次都要做一些便利操作，费时，或者需要对id和重发时间两个属性做索引，也会大大增大索引时间。因此，此处不让用户随意去设置重发时间，而是设置一个固定的值，如此，数据会按顺序排列。</p>
-<h3 id="取出消息">取出消息</h3><ul>
-<li>broker捕获并纪录写入事件，不需要轮训db</li>
-<li>消息buffer，相当于做了一层缓存</li>
-<li>消费者既不用push也不用poll，而是使用long polling。当消费者想要数据的时候，向broker发送信息，broker直到有新的消息到来的时候立即返回新的消息，消费者的监听器受到消息。</li>
-</ul>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1580,21 +1570,21 @@ static {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

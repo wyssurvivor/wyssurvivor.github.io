@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="docker," />
+  <meta name="keywords" content="coding life," />
 
 
 
@@ -51,40 +51,16 @@
 
 
 
-<meta name="description" content="初探dockerdocker引擎技术核心包括镜像和容器。镜像是一个文件系统，没有状态。容器是景象的一个运行中的实例。如果运行下面的命令：    docker run hello-world
-docker引擎会做：
-
-检查是否有-world景象
-如果没有，从Docker Hub下载该镜像到本地
-加载镜像并运行
-
-一个镜像能够干更多的更复杂的事情。一个镜像可以运行像数据库这样复杂的软件来管理数据。
-H">
+<meta name="description" content="去年为了我自己存储个人帐号密码的需要，就自己动手用pyqt写了一个mac上的app，用了存储我自己的用户名和密码。当时不用什么1password等app来存储这些信息是因为，作为一个程序员，我还是觉得自己写的app，所有东西都在我自己的掌控之下来的更有安全感一些。然而，今晚出了点小麻烦，就当我想要打开这个app，记录一个我在某网站申请的帐号的时候，我发现这个app打不开了。macOS给的信息大致是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20160910-docker">
-<meta property="og:url" content="http://wyssurvivor.github.io/2016/09/10/20160910-docker/index.html">
+<meta property="og:title" content="20170311-fix-a-strange-problem">
+<meta property="og:url" content="http://wyssurvivor.github.io/2017/03/11/20170311-fix-a-strange-problem/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="初探dockerdocker引擎技术核心包括镜像和容器。镜像是一个文件系统，没有状态。容器是景象的一个运行中的实例。如果运行下面的命令：    docker run hello-world
-docker引擎会做：
-
-检查是否有-world景象
-如果没有，从Docker Hub下载该镜像到本地
-加载镜像并运行
-
-一个镜像能够干更多的更复杂的事情。一个镜像可以运行像数据库这样复杂的软件来管理数据。
-H">
-<meta property="og:updated_time" content="2016-09-10T11:00:11.000Z">
+<meta property="og:description" content="去年为了我自己存储个人帐号密码的需要，就自己动手用pyqt写了一个mac上的app，用了存储我自己的用户名和密码。当时不用什么1password等app来存储这些信息是因为，作为一个程序员，我还是觉得自己写的app，所有东西都在我自己的掌控之下来的更有安全感一些。然而，今晚出了点小麻烦，就当我想要打开这个app，记录一个我在某网站申请的帐号的时候，我发现这个app打不开了。macOS给的信息大致是">
+<meta property="og:updated_time" content="2017-03-11T15:58:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="20160910-docker">
-<meta name="twitter:description" content="初探dockerdocker引擎技术核心包括镜像和容器。镜像是一个文件系统，没有状态。容器是景象的一个运行中的实例。如果运行下面的命令：    docker run hello-world
-docker引擎会做：
-
-检查是否有-world景象
-如果没有，从Docker Hub下载该镜像到本地
-加载镜像并运行
-
-一个镜像能够干更多的更复杂的事情。一个镜像可以运行像数据库这样复杂的软件来管理数据。
-H">
+<meta name="twitter:title" content="20170311-fix-a-strange-problem">
+<meta name="twitter:description" content="去年为了我自己存储个人帐号密码的需要，就自己动手用pyqt写了一个mac上的app，用了存储我自己的用户名和密码。当时不用什么1password等app来存储这些信息是因为，作为一个程序员，我还是觉得自己写的app，所有东西都在我自己的掌控之下来的更有安全感一些。然而，今晚出了点小麻烦，就当我想要打开这个app，记录一个我在某网站申请的帐号的时候，我发现这个app打不开了。macOS给的信息大致是">
 
 
 
@@ -96,7 +72,7 @@ H">
   };
 </script>
 
-  <title> 20160910-docker | Ryan Wang </title>
+  <title> 20170311-fix-a-strange-problem | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -226,7 +202,7 @@ H">
             
             
               
-                20160910-docker
+                20170311-fix-a-strange-problem
               
             
           </h1>
@@ -235,11 +211,26 @@ H">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-09-10T17:34:24+08:00" content="2016-09-10">
-              2016-09-10
+            <time itemprop="dateCreated" datetime="2017-03-11T23:34:19+08:00" content="2017-03-11">
+              2017-03-11
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/coding-life/" itemprop="url" rel="index">
+                    <span itemprop="name">coding life</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -259,46 +250,16 @@ H">
       
 
       
-        <span itemprop="articleBody"><h2 id="初探docker">初探docker</h2><p>docker引擎技术核心包括镜像和容器。<br>镜像是一个文件系统，没有状态。容器是景象的一个运行中的实例。如果运行下面的命令：<br>    docker run hello-world</p>
-<p>docker引擎会做：</p>
-<ul>
-<li>检查是否有-world景象</li>
-<li>如果没有，从Docker Hub下载该镜像到本地</li>
-<li>加载镜像并运行</li>
-</ul>
-<p>一个镜像能够干更多的更复杂的事情。一个镜像可以运行像数据库这样复杂的软件来管理数据。</p>
-<h3 id="Hello_World_in_a_Docker">Hello World in a Docker</h3><h4 id="Run_a_Hello_World">Run a Hello World</h4><p>在docker中你可以运行自己的程序，构造自己想要的任何东西。运行程序使用docker run命令。<br>    docker run ubuntu /bin/echo ‘hello world’</p>
-<p>在这个例子中</p>
-<ul>
-<li>docker run 运行了一个容器</li>
-<li>ubuntu 是要运行的镜像</li>
-<li>/bin/echo 是新容器中运行的命令</li>
-</ul>
-<h4 id="Run_an_interactive_container">Run an interactive container</h4><p>使用如下命令运行一个交互式的容器<br>    docker run -t -i ubuntu /bin/echo</p>
-<p>在这个例子中－t flag表示在容器中运行了一个terminal，－i flag允许你以交互的方式运行容器。</p>
-<h4 id="Start_a_daemonized_Hello_world">Start a daemonized Hello world</h4><p>执行下面的命令创建一个容器并以daemon的方式运行<br>    docker run -d ubuntu /bin/sh -c “while true;do echo hello world;sleep 1;done”</p>
-<p>-d flag表示以daemon的方式运行。命令运行后会有一个container ID。可以使用这个ID来查看daemon容器中的信息。<br>    docker ps</p>
-<p>docker ps可以看到容器在的运行状态。然而容器是否如我们期望的那样运行着？可以通过下面命令查看。<br>    docker logs container_name/container_id</p>
-<p>运行下面的命令停止容器运行<br>    docker stop container_name/container_id</p>
-<h3 id="Run_a_simple_application">Run a simple application</h3><h4 id="Running_a_web_application_in_Docker">Running a web application in Docker</h4><p>运行以下命令运行一个web应用<br>    docker run -d -P training/webapp python app.py</p>
-<p>－P flag 告诉Docker把相应的容器内的port绑定到host机的port上。你也可以在运行的时候用－p选项指定要绑定到的本机端口。<br>    docker run -d -p 80:5000 training/webapp python app.py</p>
-<h4 id="A_network_port_shortcut">A network port shortcut</h4><p>使用docker port命令查看某个容器的某个端口的绑定情况<br>    docker port contaniner_name port_number</p>
-<h3 id="Build_your_own_images">Build your own images</h3><p>镜像是容器的基础。每次使用docker run命令的时候都会告诉docker你要使用的镜像名称。在之前的命令中使用的镜像都是已经存在的镜像。</p>
-<h4 id="Listing_images_on_the_host">Listing images on the host</h4><p>使用如下命令：<br>    docker images</p>
-<p>可以看到本机上有的所有的镜像的信息，包括镜像名称，tag，镜像ID，创建时间、大小等。</p>
-<h4 id="Getting_a_new_image">Getting a new image</h4><p>如果docker发现你要使用的镜像在本地没有，就会自动下载镜像到本地。你也可以预先自己下载好镜像，使用：<br>    docker pull centos</p>
-<p>可以在打印出的信息中看到镜像的每个文件层都被下载下来了，之后就可以方便的使用了。</p>
-<h4 id="Creating_our_own_images">Creating our own images</h4><p>如果发现没有现成的镜像能够满足你的需求，那么可以自己来创建一个容器。创建容器有两种方式：</p>
-<ul>
-<li>在一个容器的基础上做修改更新然后提交结果并生成一个镜像</li>
-<li>通过使用Dockerfile创建一个容器</li>
-</ul>
-<h5 id="Updating_and_committing_an_image">Updating and committing an image</h5><p>为了更新一个镜像，首先运行一个镜像<br>    docker run -ti training?sinatra /bin/bash</p>
-<p>在交互式的命令行中做修改更新：<br>    apt-get install -y ruby2.0-dev<br>    gem2.0 install json</p>
-<p>执行完毕之后使用exit退出。现在有一个你修改过的容器，你可以通过以下命令把该容器的一份拷贝生成镜像。<br>    docker commit -m “” -a “” container_id image_name</p>
-<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x78;&#x78;&#x78;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#46;&#x63;&#111;&#109;">&#x78;&#x78;&#x78;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#46;&#x63;&#111;&#109;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
-<p>有了Dockerfile使用docker build创建镜像<br>    docker build -t container_name .</p>
-<p>通过输出可以个看到，docker 会顺序的一条一条的执行Dockerfile中的命令。每个命令会创建一个新的容器，执行指令并提交修改，就像docker commit的工作原理一样</p>
+        <span itemprop="articleBody"><p>去年为了我自己存储个人帐号密码的需要，就自己动手用pyqt写了一个mac上的app，用了存储我自己的用户名和密码。当时不用什么1password等app来存储这些信息是因为，作为一个程序员，我还是觉得自己写的app，所有东西都在我自己的掌控之下来的更有安全感一些。<br>然而，今晚出了点小麻烦，就当我想要打开这个app，记录一个我在某网站申请的帐号的时候，我发现这个app打不开了。macOS给的信息大致是这样的 “在打开sip.so的时候python报错”。WTF？黑人问好脸？苹果好歹也是个大厂，能不能在错误提示和汉语翻译这方面上点心。然后看详细的报错信息。。。还是放弃了，毕竟我是个很软的软件工程师，这种类似于汇编的东西实在是超出了我的能力范围。<br>于是就开始查是什么问题，由于苹果系统渣一样的错误提示，导致google不到有用的信息。于是就出google一下sip</p>
+<pre><code>SIP is <span class="operator">a</span> tool that makes <span class="keyword">it</span> very easy <span class="built_in">to</span> <span class="built_in">create</span> Python bindings <span class="keyword">for</span> C <span class="operator">and</span> C++ libraries. It was originally developed <span class="built_in">to</span> <span class="built_in">create</span> PyQt, <span class="operator">the</span> Python bindings <span class="keyword">for</span> <span class="operator">the</span> Qt toolkit, but can be used <span class="built_in">to</span> <span class="built_in">create</span> bindings <span class="keyword">for</span> <span class="keyword">any</span> C <span class="operator">or</span> C++ library.
+</code></pre><p>基本上就是说，sip能够使的python调用用C和C＋＋编写的程序库。想到PyQT应该是对QT的调用，想来也是需要这东西的。于是用homebrew查看了一下sip的安装信息</p>
+<pre><code>/usr/local/Cellar/sip/<span class="number">4.16</span><span class="number">.9</span> (<span class="number">10</span> files, <span class="number">858.9</span>KB)
+Poured from bottle on <span class="number">2015</span>-<span class="number">09</span>-<span class="number">14</span> at <span class="number">13</span>:<span class="number">31</span>:<span class="number">28</span>
+/usr/local/Cellar/sip/<span class="number">4.19</span> (<span class="number">12</span> files, <span class="number">941.6</span>KB) *
+Poured from bottle on <span class="number">2017</span>-<span class="number">03</span>-<span class="number">05</span> at <span class="number">15</span>:<span class="number">33</span>:<span class="number">39</span>
+</code></pre><p>居然有两个版本，我在前几天安装octave的时候曾经运行过brew upgrade命令，一定是在那个时候更新了sip，导致与现在的QT版本不兼容而报错了。那么怎么修复呢？继续google，发现homebrew果然是个神奇，运行switch命令，切换版本，大功告成，程序又可以正常运行了。</p>
+<pre><code>brew <span class="keyword">switch</span> sip <span class="number">4.16</span><span class="number">.1</span>
+</code></pre><p>在写这篇文章的时候，出现了同样的问题，hexo报错显示node版本不兼容，想都不用想，homebrew切换一下版本，搞定。</p>
 </span>
       
     </div>
@@ -307,7 +268,7 @@ H">
       
         <div class="post-tags">
           
-            <a href="/tags/docker/" rel="tag">#docker</a>
+            <a href="/tags/coding-life/" rel="tag">#coding life</a>
           
         </div>
       
@@ -316,17 +277,13 @@ H">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/28/20160828-LSM-Tree/" rel="next" title="20160828-LSM-Tree">
-                <i class="fa fa-chevron-left"></i> 20160828-LSM-Tree
+              <a href="/2017/02/20/20170220-coroutine/" rel="next" title="20170220-coroutine">
+                <i class="fa fa-chevron-left"></i> 20170220-coroutine
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/02/20/20170220-coroutine/" rel="prev" title="20170220-coroutine">
-                20170220-coroutine <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -440,7 +397,7 @@ H">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初探docker"><span class="nav-number">1.</span> <span class="nav-text">初探docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello_World_in_a_Docker"><span class="nav-number">1.1.</span> <span class="nav-text">Hello World in a Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Run_a_Hello_World"><span class="nav-number">1.1.1.</span> <span class="nav-text">Run a Hello World</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Run_an_interactive_container"><span class="nav-number">1.1.2.</span> <span class="nav-text">Run an interactive container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Start_a_daemonized_Hello_world"><span class="nav-number">1.1.3.</span> <span class="nav-text">Start a daemonized Hello world</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run_a_simple_application"><span class="nav-number">1.2.</span> <span class="nav-text">Run a simple application</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Running_a_web_application_in_Docker"><span class="nav-number">1.2.1.</span> <span class="nav-text">Running a web application in Docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#A_network_port_shortcut"><span class="nav-number">1.2.2.</span> <span class="nav-text">A network port shortcut</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Build_your_own_images"><span class="nav-number">1.3.</span> <span class="nav-text">Build your own images</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Listing_images_on_the_host"><span class="nav-number">1.3.1.</span> <span class="nav-text">Listing images on the host</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Getting_a_new_image"><span class="nav-number">1.3.2.</span> <span class="nav-text">Getting a new image</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Creating_our_own_images"><span class="nav-number">1.3.3.</span> <span class="nav-text">Creating our own images</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Updating_and_committing_an_image"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Updating and committing an image</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Building_an_image_from_a_Dockerfile"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Building an image from a Dockerfile</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

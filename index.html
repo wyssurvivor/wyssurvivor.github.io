@@ -210,6 +210,274 @@
             
               
                 
+                <a class="post-title-link" href="/2017/04/30/20170430-redis-pipeline/" itemprop="url">
+                  20170430-redis-pipeline
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-04-30T15:36:06+08:00" content="2017-04-30">
+              2017-04-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/redis/develop/" itemprop="url" rel="index">
+                    <span itemprop="name">develop</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="redis_pipeline">redis pipeline</h2><p><a href="https://redis.io/topics/pipelining" target="_blank" rel="external">redis pipeline</a></p>
+<p>redis是一种典型的服务器－客户端工作模式。客户端把想要执行的命令发送给服务器端，服务器端返回结果给客户端。<br>所以一个包含四个命令的序列的执行如下：</p>
+<ul>
+<li>Client:incr key 1</li>
+<li>Server:1</li>
+<li>Client:incr key 1</li>
+<li>Server:2</li>
+<li>Client:incr key 1</li>
+<li>Server:3</li>
+<li>Client:incr key 1</li>
+<li>Server:4</li>
+</ul>
+<p>从客户端发送命令到客户端接受回复这一段时间，请求和回复在网络中传输，这个时间段是一个RTT（Round Trip Time）。如果是如上面这样的执行方式，那么执行完需要四个RTT。整个请求完成需要的时间比较长。redis 提供了一种优化的方案是redis pipeline。</p>
+<p>对于redis pipeline，客户端可以在没有收到上一个请求的回复的时候就发起下一个请求。在这种模式下，你可以同时发送多个请求而不用等待回复，最终获得一个结果即可。这优点类似于网络中并行发送请求的样子。所以上面的例子在使用pipeline的情况下是这样工作的：</p>
+<ul>
+<li>Client:incr key 1</li>
+<li>Client:incr key 1</li>
+<li>Client:incr key 1</li>
+<li>Client:incr key 1</li>
+<li>Server:1</li>
+<li>Server:2</li>
+<li>Server:3</li>
+<li>Server:4</li>
+</ul>
+<p>注意，pipeline模式中在服务器端需要存储这些请求以后续执行。因此，在使用pipeline的时候会额外消耗一些内存空间。所以如果客户端会发送大量的请求到redis server，就会导致消耗大量的内存空间。在这种情况下，使用各种数据类型的Batch操作是一种更好的方式，它不会消耗额外的空间。而且执行效率上来说，与pipeline的方式差不多，没有本质上的差别。</p>
+<p>在java中使用Jedis</p>
+<pre><code><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withPipeline</span><span class="params">(Jedis redis)</span> </span>{
+    redis.select(<span class="number">8</span>);
+    redis.flushDB();
+    <span class="keyword">long</span> start = System.currentTimeMillis();
+    Pipeline pipe = redis.pipelined();
+    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10000</span>;i++) {
+        pipe.<span class="built_in">set</span>(<span class="string">"pk_"</span>+i, i+<span class="string">""</span>);
+    }
+    pipe.sync();
+    <span class="keyword">long</span> end = System.currentTimeMillis();
+    System.out.println(<span class="string">"with pipeline: "</span> + (end-start) + <span class="string">" milliseconds"</span>);
+}
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withoutPipeline</span><span class="params">(Jedis redis)</span> </span>{
+    redis.select(<span class="number">8</span>);
+    redis.flushDB();
+    <span class="keyword">long</span> start = System.currentTimeMillis();
+    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10000</span>;i++) {
+        redis.<span class="built_in">set</span>(<span class="string">"k_"</span>+i,i+<span class="string">""</span>);
+    }
+    <span class="keyword">long</span> end = System.currentTimeMillis();
+    System.out.println(<span class="string">"with out pipeline: "</span> + (end-start) + <span class="string">" milliseconds"</span>);
+}
+</code></pre><p>在我自己机器上的执行结果是：</p>
+<pre><code><span class="operator">with</span> out pipeline: <span class="number">895</span> <span class="built_in">milliseconds</span>
+<span class="operator">with</span> pipeline: <span class="number">78</span> <span class="built_in">milliseconds</span>
+</code></pre><p>可以看到使用pipeline还是能快挺多的</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/20/20170320-io-1/" itemprop="url">
+                  20170320-io_1
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-03-20T23:27:36+08:00" content="2017-03-20">
+              2017-03-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="IO">IO</h2><p>一直以来对于io的一些概念比较模糊不清，最近看netty决定好好的理一下。要讨论io首先要区分同步／异步和阻塞／非阻塞这两组概念。</p>
+<h3 id="同步和异步">同步和异步</h3><ul>
+<li>同步是指一个任务需要等待依赖的任务完成，才能继续执行下去，这个任务的执行就是同步的。</li>
+<li>异步就是一个任务的执行不需要等待依赖的任务完成就可以继续执行下去。</li>
+<li>e.g. 一个同步的网络调用必须等待服务器端执行完了，调用端得到了返回结果，才能继续执行下午。而一个异步的网络调用不需要等待服务器端返回结果就能继续执行下去。至于服务器端的返回可以通过修改状态、通知和回调来通知调用者。</li>
+</ul>
+<h3 id="阻塞和非阻塞">阻塞和非阻塞</h3><ul>
+<li>阻塞是指线程在等待消息返回时不能处理其它任务，则是阻塞的。</li>
+<li>非阻塞是指线程在等待消息返回时可以转而去处理其它任务，当消息就绪时，再回来继续执行下去。</li>
+<li>阻塞和同步是两个不同的概念。当一个同步调用在等待消息返回时，可以有两种情况：1.线程不能处理其它任务，那么就是同步阻塞的2.线程可以处理其它任务，那么就是同步非阻塞的。</li>
+<li>异步阻塞和异步非阻塞也是存在的。我的理解是，当一个任务异步调用了另一个任务的时候，在得到消息返回之前可以是阻塞的也可以是非阻塞的。</li>
+</ul>
+<h3 id="操作系统的缓冲io">操作系统的缓冲io</h3><p>为了优化操作系统读写io的速度，在操作系统内核区域加了一块缓冲区。用户的read操作并不是直接从硬盘读数据，是把硬盘上的数据块复制到内核缓冲区中。如果要读取的数据不在内核缓冲区中，操作系统会把相应的数据块加入到请求队列中，然后挂起该进程，为其它进程服务。一段时间之后，操作系统把数据从硬盘读取到内核缓冲区中，然后从内核缓冲区读取到用户进程的缓冲区中，最后唤醒被挂起的进程。</p>
+<p>类似的，当一个进程相要从socket读取数据时，先把数据从socket缓冲区复制到内核缓冲区中，然后从内核缓冲区复制到用户进程的缓冲区中。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/03/11/20170311-fix-a-strange-problem/" itemprop="url">
                   20170311-fix-a-strange-problem
                 </a>
@@ -492,7 +760,7 @@ Poured from bottle on <span class="number">2017</span>-<span class="number">03</
 <h5 id="Updating_and_committing_an_image">Updating and committing an image</h5><p>为了更新一个镜像，首先运行一个镜像<br>    docker run -ti training?sinatra /bin/bash</p>
 <p>在交互式的命令行中做修改更新：<br>    apt-get install -y ruby2.0-dev<br>    gem2.0 install json</p>
 <p>执行完毕之后使用exit退出。现在有一个你修改过的容器，你可以通过以下命令把该容器的一份拷贝生成镜像。<br>    docker commit -m “” -a “” container_id image_name</p>
-<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x78;&#x78;&#x78;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#46;&#x63;&#111;&#109;">&#x78;&#x78;&#x78;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#46;&#x63;&#111;&#109;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
+<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x78;&#120;&#x78;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x78;&#120;&#x78;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
 <p>有了Dockerfile使用docker build创建镜像<br>    docker build -t container_name .</p>
 <p>通过输出可以个看到，docker 会顺序的一条一条的执行Dockerfile中的命令。每个命令会创建一个新的容器，执行指令并提交修改，就像docker commit的工作原理一样</p>
 
@@ -1247,283 +1515,6 @@ static {
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/02/20160702-threadlocal/" itemprop="url">
-                  threadlocal
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-07-02T13:58:26+08:00" content="2016-07-02">
-              2016-07-02
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h2 id="ThreadLocal">ThreadLocal</h2><p>为了解决多线程并发访问的问题，比较流行的做法是通过加锁等技术实现多线程访问的同步。而ThreadLocal从另一个角度给出了一种解决方案，就是多个线程不再访问公共的数据，而是每一个线程都有自己独一份的数据，因此再怎么修改也不会影响到其他线程。</p>
-<p>这种方法在有些情况下比较适用，比如数据库连接池用ThreadLocal来保存当前线程所使用的Connection，以保证事物的有效性。</p>
-<p>那么ThreadLocal是如何实现的呢？通过查看源码可以看到，在Thread的类生命中有如下一个threadlocalmap</p>
-<pre><code>ThreadLocal.ThreadLocalMap threadLocals = <span class="literal">null</span>;
-</code></pre><p>这个ThreadLocalMap是ThreadLocal的内部类，它的实现方式有点类似于HashMap。内部存储是由下面这个数组负责实现的</p>
-<pre><code><span class="keyword">private</span> <span class="built_in">Entry</span>[] table;
-</code></pre><p>Entry是ThreadLocalMap的一个内部类，就是ThreadLocalMap中数组元素的类型</p>
-<pre><code>static <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">WeakReference&lt;ThreadLocal&gt;</span> {</span>
-    <span class="type">Object</span> value;
-    <span class="type">Entry</span>(<span class="type">ThreadLocal</span> k, <span class="type">Object</span> v) {
-        <span class="keyword">super</span>(k);
-        value = v;
-    }
-}
-</code></pre><p>如此可以看到，这个Entry继承了WeakReference类，弱引用引用的是ThreadLocal，同时，这个ThreadLocal对象也用来当做一个Key区分Object。这个地方使用了弱引用，关于java中的弱引用以后再专门写点东西研究一下。</p>
-<p>到这里，可能已经有点晕了，其实看一下ThreadLocal的get和set实现基本就能理解这个地方到底是如何实现的了。</p>
-<pre><code><span class="keyword">public</span> T get() {
-    <span class="keyword">Thread</span> t = <span class="keyword">Thread</span><span class="built_in">.</span>currentThread();
-    ThreadLocalMap <span class="built_in">map</span> = getMap(t);
-    <span class="keyword">if</span> (<span class="built_in">map</span> != <span class="built_in">null</span>) {
-        ThreadLocalMap<span class="built_in">.</span>Entry e = <span class="built_in">map</span><span class="built_in">.</span>getEntry(this);
-        <span class="keyword">if</span> (e != <span class="built_in">null</span>)
-            <span class="keyword">return</span> (T)e<span class="built_in">.</span>value;
-    }
-    <span class="keyword">return</span> setInitialValue();
-}
-<span class="keyword">public</span> <span class="literal">void</span> <span class="built_in">set</span>(T value) {
-    <span class="keyword">Thread</span> t = <span class="keyword">Thread</span><span class="built_in">.</span>currentThread();
-    ThreadLocalMap <span class="built_in">map</span> = getMap(t);
-    <span class="keyword">if</span> (<span class="built_in">map</span> != <span class="built_in">null</span>)
-        <span class="built_in">map</span><span class="built_in">.</span><span class="built_in">set</span>(this, value);
-    <span class="keyword">else</span>
-        createMap(t, value);
-}
-</code></pre><p>这个ThreadLocal操作Thread线程自己的ThreadLocalMap来get和set数据，同时ThreadLocal把自己当作Key。</p>
-<p>这个ThreadLocal其实是用空间来换时间的一种思路，使用它会使得内存占用更多的空间。不应该用ThreadLocal存储很大的数据，否则在线程很多的情况下，会大量占用内存，导致jvm gc频繁发生，使得系统的响应变慢很多。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/10/20160310-micro-service/" itemprop="url">
-                  micro service
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-10T22:59:48+08:00" content="2016-03-10">
-              2016-03-10
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/architecture/" itemprop="url" rel="index">
-                    <span itemprop="name">architecture</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h2 id="Monolithic_architecture">Monolithic architecture</h2><p>传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-10%20%E4%B8%8B%E5%8D%8811.43.11.png" alt="monolithic"></p>
-<p>这种架构的好处在于，易于开发，易于部署，易于水平扩展。<br>缺点却是很明显</p>
-<ul>
-<li>不利于项目组中的新人上手</li>
-<li>不利于做持续部署（不知道continuous deployment怎么翻译），为了修改一个模块而必须重新发布部署整个项目。</li>
-<li>数据库无法扩容，并且每个server实例都会访问所有的数据，使得数据库的缓存失效</li>
-<li>团队开发合并代码出现冲突概率更大</li>
-<li>…</li>
-</ul>
-<h2 id="Microservices_architechture">Microservices architechture</h2><p>为了解决monolithic架构的问题，最近几年业界提出了micro service的架构，而且这种架构在实际运用中使用的越来越广泛。<br>这种架构引入了<a href="http://microservices.io/articles/scalecube.html" target="_blank" rel="external">scale cube</a>的思想,把一整个项目按照功能区分为很多个不同的service，每个service提供一个核心的功能歌，并且只做这一件事情。比如说，电商系统架构包含支付服务、物品信息服务、用户管理服务、订单服务等。<br>服务之间的通信使用同步协议如http／rest／thrift，或者异步协议。<br>服务的部署是相互分割开来的。每个service有自己的数据库</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-11%20%E4%B8%8A%E5%8D%8812.14.31.png" alt="microservice"></p>
-<p>这种架构的缺点</p>
-<ul>
-<li>难测试</li>
-<li>需要处理服务之间的信息交互问题</li>
-<li>这种架构提升了部署和管理系统的复杂度<br>这种架构的优点</li>
-<li>每个服务专注于一个目的，小而精</li>
-<li>服务单独部署</li>
-<li>能有效的隔离系统错误，某个服务出现问题，并不会影响其他的服务</li>
-</ul>
-<p>我的疑问？如果每个服务有自己的数据库，那么如果在需要联合查询的场景下，微服务架构怎么解决这个问题？<a href="http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015" target="_blank" rel="external">http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015</a></p>
-<h2 id="API_Gateway">API Gateway</h2><p>如果用微服务的架构开发一个电商网站，产品详情页可能需要用到的服务有产品信息服务、价格服务、订单服务、库存服务等。那么一些问题也随之而来</p>
-<ul>
-<li>因为微服务架构下，没个服务都是专注的，那么整个系统中会有很多服务</li>
-<li>不同的客户端需要不同的数据</li>
-<li>服务的实例的数量和地址会动态变化的</li>
-<li>服务划分的过程应该是对客户端透明的。</li>
-</ul>
-<p>在这些服务前面加上一层，就能有效解决上面这些问题，这就是api gateway</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%885.52.30.png" alt="api gateway"></p>
-<p>加入API Gateway的好处是</p>
-<ul>
-<li>把服务的划分跟客户端分隔开</li>
-<li>客户端不需要知道也不关心这些服务的位置</li>
-<li>为不同类型的客户端选择最合适的服务</li>
-<li>把调用服务的逻辑放在 api gateway层，简化了客户端</li>
-</ul>
-<p>这种方法有两个缺点</p>
-<ul>
-<li>api gateway需要开发和维护</li>
-<li>增加了一次客户端调用返回的总时间</li>
-</ul>
-<h2 id="Client-side_service_discovery">Client-side service discovery</h2><p>服务之间也会相互调用。在monolithic架构下，服务调用是通过语言层上的函数调用实现的。在传统架构下，我们知道服务的固定的地址，因此可以轻易的调用它。<br>然而，在微服务架构下，服务的地址和实例数量都会变得，而且服务很可能跑在虚拟容器中，它的ip也是会变得。因此，我们需要解决的问题就是让服务的客户端能够向动态变化的服务实力集合发起访问。API Gateway，作为服务的客户端，该如何发现服务实例。解决方案如下图</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.16.43.png" alt="clientside discovery"></p>
-<h2 id="Server-side_service_discovery">Server-side service discovery</h2><p>对于前面提出的服务发现问题，还有一种Server side discovery的方法。客户端在要访问某个服务时，客户端先访问一个router（部署在固定的网络地址），这个router向service registry发起查询，然后向服务的某个实例发起访问。</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.28.40.png" alt="serverside discovery"></p>
-<p>与client－side service discovery相比，server side discovery的客户端代码更简单，然而却增加了更多的网络访问步骤。</p>
-<h2 id="Service_registry">Service registry</h2><p>前两节提到的，关于服务注册。相当于一个存储服务信息的数据库，存储了实例信息和地址等信息。当服务实例启动的时候，在注册服务注册自己，实例停止的时候，告知注册服务。eureka、zookeeper等是现有的service registry。<br>服务的客户端可以通过service registry 发现服务。然而，这也给整个架构带来风险，一旦service registry down掉，整个架构都不可用。</p>
-<h2 id="Self_registration">Self registration</h2><p>如何实现service registry，服务必须在启动和关闭的时候注册，并且当服务crash 的时候也需要unregistry。因此，服务必须周期性的更新自得信息，重新注册。<br>使用zookeeper作service registry。没个服务对应zookeeper中的一个znode。在服务的一个实例启动的时候，在zookeeper该服务的znode节点下新家一个临时性的znode节点，标示一个实例。该节点包含了服务实例的地址信息。客户端取到该服务下的所有节点来决定调用哪个实例。如果实例非法推出，没有从zookeeper删除节点，则zookeeper会在过期时间到的时候删除节点</p>
-<h2 id="3rd_Party_Registry">3rd Party Registry</h2><p>加入第三方注册器来负责服务的注册。<br>这种方式可以简化服务代码，服务并不需要考虑注册的问题。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1570,21 +1561,21 @@ static {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="mysql," />
+  <meta name="keywords" content="develop,https," />
 
 
 
@@ -51,16 +51,35 @@
 
 
 
-<meta name="description" content="mysql事务隔离级别事务隔离级别是数据库中的基础部分之一，对应acid四个特性中的i（isolation）。innodb引擎支持四种隔离级别：read uncommitted、read committed、repeatable read、serializable。每一种隔离级别都是在性能与可靠性、一致性之间做中和选择。Innodb默认的隔离级别是repeatable read。用户需要根据自己的">
+<meta name="description" content="https原理参考
+
+https的验证流程：
+
+客户端把自己支持的协议版本、加密算法、压缩算法等信息传递给服务器端。
+服务器端接收到请求后对这些属性进行选择，如果不能找到支持的协议组件，就断开连接。如果能够支持，就把证书传给客户端。证书中包涵公钥、ca机构，网址，失效日期。
+客户端接收到响应之后会验证证书的合法性并且声称一个随机的key，并用公钥对随机数加密，再用随机的key对握手信息进行加密，这">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql-transaction-isolation-level">
-<meta property="og:url" content="http://wyssurvivor.github.io/2016/08/06/20160806-mysql-transaction-isolation-level/index.html">
+<meta property="og:title" content="20170506-https-theory">
+<meta property="og:url" content="http://wyssurvivor.github.io/2017/05/06/20170506-https-theory/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="mysql事务隔离级别事务隔离级别是数据库中的基础部分之一，对应acid四个特性中的i（isolation）。innodb引擎支持四种隔离级别：read uncommitted、read committed、repeatable read、serializable。每一种隔离级别都是在性能与可靠性、一致性之间做中和选择。Innodb默认的隔离级别是repeatable read。用户需要根据自己的">
-<meta property="og:updated_time" content="2016-08-06T14:00:07.000Z">
+<meta property="og:description" content="https原理参考
+
+https的验证流程：
+
+客户端把自己支持的协议版本、加密算法、压缩算法等信息传递给服务器端。
+服务器端接收到请求后对这些属性进行选择，如果不能找到支持的协议组件，就断开连接。如果能够支持，就把证书传给客户端。证书中包涵公钥、ca机构，网址，失效日期。
+客户端接收到响应之后会验证证书的合法性并且声称一个随机的key，并用公钥对随机数加密，再用随机的key对握手信息进行加密，这">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/366784/201601/366784-20160127222221785-258650029.png">
+<meta property="og:updated_time" content="2017-05-06T03:40:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql-transaction-isolation-level">
-<meta name="twitter:description" content="mysql事务隔离级别事务隔离级别是数据库中的基础部分之一，对应acid四个特性中的i（isolation）。innodb引擎支持四种隔离级别：read uncommitted、read committed、repeatable read、serializable。每一种隔离级别都是在性能与可靠性、一致性之间做中和选择。Innodb默认的隔离级别是repeatable read。用户需要根据自己的">
+<meta name="twitter:title" content="20170506-https-theory">
+<meta name="twitter:description" content="https原理参考
+
+https的验证流程：
+
+客户端把自己支持的协议版本、加密算法、压缩算法等信息传递给服务器端。
+服务器端接收到请求后对这些属性进行选择，如果不能找到支持的协议组件，就断开连接。如果能够支持，就把证书传给客户端。证书中包涵公钥、ca机构，网址，失效日期。
+客户端接收到响应之后会验证证书的合法性并且声称一个随机的key，并用公钥对随机数加密，再用随机的key对握手信息进行加密，这">
 
 
 
@@ -72,7 +91,7 @@
   };
 </script>
 
-  <title> mysql-transaction-isolation-level | Ryan Wang </title>
+  <title> 20170506-https-theory | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -202,7 +221,7 @@
             
             
               
-                mysql-transaction-isolation-level
+                20170506-https-theory
               
             
           </h1>
@@ -211,26 +230,11 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-08-06T20:20:19+08:00" content="2016-08-06">
-              2016-08-06
+            <time itemprop="dateCreated" datetime="2017-05-06T10:46:55+08:00" content="2017-05-06">
+              2017-05-06
             </time>
           </span>
 
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
           
 
           
@@ -250,11 +254,16 @@
       
 
       
-        <span itemprop="articleBody"><h2 id="mysql事务隔离级别">mysql事务隔离级别</h2><p>事务隔离级别是数据库中的基础部分之一，对应acid四个特性中的i（isolation）。innodb引擎支持四种隔离级别：read uncommitted、read committed、repeatable read、serializable。每一种隔离级别都是在性能与可靠性、一致性之间做中和选择。Innodb默认的隔离级别是repeatable read。用户需要根据自己的实际需求来在这四种级别中做选择。</p>
-<h3 id="read_uncommitted">read uncommitted</h3><p>在事务中做select操作的时候不加任何锁，因此读到的信息和可能是过时的，被其他transaction修改过的。也是说，这种隔离界别，不具有一致性，会出现脏读的情况。</p>
-<h3 id="read_committed">read committed</h3><p>事务中的读操作是一致性读，并且每一次的读操作，都会获取到数据的最新快找。也就是说，在这种隔离级别下，多次读读到的内容可能是不一样的，也就是不可重复读的问题。<br>对于事务中的加锁读（select…for update or select …lock in share mode）、更新操作、删除操作，只在用到的行上加index lock，不加gap lock</p>
-<h3 id="repeatable_read">repeatable read</h3><p>事务中的读是一致性读。在同一个事务中的重复读，读到的是第一次读的快照。因此，每一次读到的内容都一样，所以叫可重复读。<br>对于加锁读、更新操作、删除操作，加锁的类型和范围视情况而定。如果语句的搜索条件使用的是unique index，innodb只在相关的行上加锁。对于其他的情况，innodb会锁定所有扫描过的范围，使用gap lock或者next-key lock。</p>
-<h3 id="serializable">serializable</h3><p>repeatable read会出现幻读的情况，serializable级别可以解决幻读。</p>
+        <span itemprop="articleBody"><h2 id="https原理">https原理</h2><p><a href="http://www.cnblogs.com/zery/p/5164795.html" target="_blank" rel="external">参考</a></p>
+<p><img src="http://images2015.cnblogs.com/blog/366784/201601/366784-20160127222221785-258650029.png" alt="流程图"></p>
+<p>https的验证流程：</p>
+<ul>
+<li>客户端把自己支持的协议版本、加密算法、压缩算法等信息传递给服务器端。</li>
+<li>服务器端接收到请求后对这些属性进行选择，如果不能找到支持的协议组件，就断开连接。如果能够支持，就把证书传给客户端。证书中包涵公钥、ca机构，网址，失效日期。</li>
+<li>客户端接收到响应之后会验证证书的合法性并且声称一个随机的key，并用公钥对随机数加密，再用随机的key对握手信息进行加密，这些信息一并发送给服务器端。</li>
+<li>服务器端收到请求后使用证书中的公钥对应的私钥解密，获取了浏览器生成的随记key，在用随机key解密获得握手信息</li>
+<li>后面服务器端与客户端相互之间的交互全部使用这个随机的key进行加密，因为只有这两者知道这个key是什么。</li>
+</ul>
 </span>
       
     </div>
@@ -263,7 +272,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mysql/" rel="tag">#mysql</a>
+            <a href="/tags/develop/" rel="tag">#develop</a>
+          
+            <a href="/tags/https/" rel="tag">#https</a>
           
         </div>
       
@@ -272,17 +283,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/30/20160729-offer006/" rel="next" title="20160729-offer006">
-                <i class="fa fa-chevron-left"></i> 20160729-offer006
+              <a href="/2017/04/30/20170430-redis-pipeline/" rel="next" title="20170430-redis-pipeline">
+                <i class="fa fa-chevron-left"></i> 20170430-redis-pipeline
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/28/20160828-LSM-Tree/" rel="prev" title="20160828-LSM-Tree">
-                20160828-LSM-Tree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -396,7 +403,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql事务隔离级别"><span class="nav-number">1.</span> <span class="nav-text">mysql事务隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#read_uncommitted"><span class="nav-number">1.1.</span> <span class="nav-text">read uncommitted</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#read_committed"><span class="nav-number">1.2.</span> <span class="nav-text">read committed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#repeatable_read"><span class="nav-number">1.3.</span> <span class="nav-text">repeatable read</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#serializable"><span class="nav-number">1.4.</span> <span class="nav-text">serializable</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#https原理"><span class="nav-number">1.</span> <span class="nav-text">https原理</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

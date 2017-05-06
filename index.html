@@ -210,6 +210,96 @@
             
               
                 
+                <a class="post-title-link" href="/2017/05/06/20170506-https-theory/" itemprop="url">
+                  20170506-https-theory
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-05-06T10:46:55+08:00" content="2017-05-06">
+              2017-05-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="https原理">https原理</h2><p><a href="http://www.cnblogs.com/zery/p/5164795.html" target="_blank" rel="external">参考</a></p>
+<p><img src="http://images2015.cnblogs.com/blog/366784/201601/366784-20160127222221785-258650029.png" alt="流程图"></p>
+<p>https的验证流程：</p>
+<ul>
+<li>客户端把自己支持的协议版本、加密算法、压缩算法等信息传递给服务器端。</li>
+<li>服务器端接收到请求后对这些属性进行选择，如果不能找到支持的协议组件，就断开连接。如果能够支持，就把证书传给客户端。证书中包涵公钥、ca机构，网址，失效日期。</li>
+<li>客户端接收到响应之后会验证证书的合法性并且声称一个随机的key，并用公钥对随机数加密，再用随机的key对握手信息进行加密，这些信息一并发送给服务器端。</li>
+<li>服务器端收到请求后使用证书中的公钥对应的私钥解密，获取了浏览器生成的随记key，在用随机key解密获得握手信息</li>
+<li>后面服务器端与客户端相互之间的交互全部使用这个随机的key进行加密，因为只有这两者知道这个key是什么。</li>
+</ul>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/04/30/20170430-redis-pipeline/" itemprop="url">
                   20170430-redis-pipeline
                 </a>
@@ -760,7 +850,7 @@ Poured from bottle on <span class="number">2017</span>-<span class="number">03</
 <h5 id="Updating_and_committing_an_image">Updating and committing an image</h5><p>为了更新一个镜像，首先运行一个镜像<br>    docker run -ti training?sinatra /bin/bash</p>
 <p>在交互式的命令行中做修改更新：<br>    apt-get install -y ruby2.0-dev<br>    gem2.0 install json</p>
 <p>执行完毕之后使用exit退出。现在有一个你修改过的容器，你可以通过以下命令把该容器的一份拷贝生成镜像。<br>    docker commit -m “” -a “” container_id image_name</p>
-<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x78;&#120;&#x78;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x78;&#120;&#x78;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
+<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x78;&#120;&#x78;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x78;&#120;&#x78;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
 <p>有了Dockerfile使用docker build创建镜像<br>    docker build -t container_name .</p>
 <p>通过输出可以个看到，docker 会顺序的一条一条的执行Dockerfile中的命令。每个命令会创建一个新的容器，执行指令并提交修改，就像docker commit的工作原理一样</p>
 
@@ -1290,237 +1380,12 @@ git branch -d hotfix-<span class="number">1.2</span><span class="number">.1</spa
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/09/20160709-java-dynamic-proxy/" itemprop="url">
-                  20160709-java-dynamic-proxy
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-07-09T13:24:53+08:00" content="2016-07-09">
-              2016-07-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h2 id="java动态代理">java动态代理</h2><p>最近在看Spring AOP的实现方式，java动态代理是其基础，因此先研究了一下java动态代理。<br>java中的代理有下面两种</p>
-<ul>
-<li>静态代理：由程序员自己写代码实现的代理，编译成class文件并运行</li>
-<li>动态代理：在程序运行的时候，运用反射机制动态创建的字节码并加载到内存中。</li>
-</ul>
-<p>静态代理基本上很熟悉了，本文主要讨论动态代理的适用和原理。动态代理所使用到的几部分内容：</p>
-<ul>
-<li>抽象接口，真实对象实现所用的接口，同时作为Proxy.newProxyInstance的一个参数</li>
-<li>真实对象，真正执行逻辑运算的对象，由代理对象调用真实对象</li>
-<li>代理对象，代替真实对象接受访问请求，调用真实对象</li>
-</ul>
-<p>使用代理的好处是能够对一次函数调用做自己的订制，加一些必要的内容，比如打log等。<br>java动态代理主要使用的几个类在java.lang.reflect包中，包括Prxoy和InvocationHandler这两个类。下面是一个非常简单的java动态代理的例子。</p>
-<p>首先是声明一个接口</p>
-<pre><code><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">Service</span> {
-    <span class="function"><span class="keyword">public</span> Object <span class="title">doService</span>(<span class="params"></span>)</span>;
-}
-</code></pre><p>然后声明一个类实现这个接口</p>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealService</span> <span class="keyword">implements</span> <span class="title">Service</span></span>{
-<span class="keyword">private</span> String serviceName;
-<span class="function"><span class="keyword">public</span> <span class="title">RealService</span><span class="params">(String serviceName)</span></span>{
-    <span class="keyword">this</span>.serviceName=serviceName;
-}
-
-<span class="function"><span class="keyword">public</span> Object <span class="title">doService</span><span class="params">()</span> </span>{
-    System.out.println(<span class="string">"Service provided by "</span>+serviceName);
-    <span class="keyword">return</span> <span class="keyword">null</span>;
-}
-}
-</code></pre><p>声明一个类实现InvocationHandler</p>
-<pre><code>public class <span class="type">ServiceDynamicProxy</span> implements <span class="type">InvocationHandler</span>{
-private <span class="type">Object</span> obj;
-public <span class="type">ServiceDynamicProxy</span>(<span class="type">Object</span> obj){
-    this.obj=obj;
-}
-public <span class="type">Object</span> invoke(<span class="type">Object</span> proxy, <span class="type">Method</span> <span class="keyword">method</span>, <span class="type">Object</span>[] args)
-        throws <span class="type">Throwable</span> {
-    doPre();
-    <span class="keyword">method</span>.invoke(obj, args);
-    doPost();
-    <span class="keyword">return</span> null;
-}
-
-public <span class="type">void</span> doPre(){
-    <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"dynamic proxy do pre"</span>);
-}
-
-public <span class="type">void</span> doPost(){
-    <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"dynamic proxy do post"</span>);
-}
-}
-</code></pre><p>最后，写一段代码调用以上的代码即可</p>
-<pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Client</span> {
-<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span>{
-    RealService ser=<span class="keyword">new</span> RealService(<span class="string">"solid"</span>);
-    InvocationHandler ih=<span class="keyword">new</span> ServiceDynamicProxy(ser);
-    Class cls=ser.getClass();
-    Service service = (Service) Proxy.newProxyInstance(cls.getClassLoader(), cls.getInterfaces(), ih);
-    service.doService();
-}
-}
-</code></pre><p>通过查看Proxy的代码可以看到，Proxy使用ProxyGenerator来动态生成了一个类的字节码加载。</p>
-<pre><code>byte<span class="string">[]</span> proxyClassFile = ProxyGenerator.generateProxyClass(
-        proxyName, interfaces);
-</code></pre><p>反编译这个生成的class字节码(这部分从网上其<a href="http://www.cnblogs.com/flyoung2008/archive/2013/08/11/3251148.html" target="_blank" rel="external">他人的博客</a>中看到，我没有实际去反编译)</p>
-<pre><code><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxySubject</span> <span class="keyword">extends</span> <span class="title">Proxy</span> <span class="keyword">implements</span> <span class="title">Service</span> {</span>
-<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m1</span>;</span>
-<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m0</span>;</span>
-<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m3</span>;</span>
-<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m2</span>;</span>
-
-<span class="keyword">public</span> ProxySubject(InvocationHandler invocationhandler) {
-    <span class="variable">super</span>(invocationhandler);
-}
-
-<span class="keyword">public</span> <span class="keyword">final</span> boolean equals(Object obj) {
-    <span class="keyword">try</span> {
-        <span class="keyword">return</span> ((Boolean) <span class="variable">super</span>.h.invoke(this, m1, <span class="keyword">new</span> Object[] { obj }))
-                .booleanValue();
-    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
-    } <span class="keyword">catch</span> (Throwable throwable) {
-        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
-    }
-}
-
-<span class="keyword">public</span> <span class="keyword">final</span> int hashCode() {
-    <span class="keyword">try</span> {
-        <span class="keyword">return</span> ((Integer) <span class="variable">super</span>.h.invoke(this, m0, <span class="literal">null</span>)).intValue();
-    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
-    } <span class="keyword">catch</span> (Throwable throwable) {
-        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
-    }
-}
-
-<span class="keyword">public</span> <span class="keyword">final</span> void doService() {
-    <span class="keyword">try</span> {
-        <span class="variable">super</span>.h.invoke(this, m3, <span class="literal">null</span>);
-        <span class="keyword">return</span>;
-    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
-    } <span class="keyword">catch</span> (Throwable throwable) {
-        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
-    }
-}
-
-<span class="keyword">public</span> <span class="keyword">final</span> String toString() {
-    <span class="keyword">try</span> {
-        <span class="keyword">return</span> (String) <span class="variable">super</span>.h.invoke(this, m2, <span class="literal">null</span>);
-    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
-    } <span class="keyword">catch</span> (Throwable throwable) {
-        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
-    }
-}
-
-static {
-    <span class="keyword">try</span> {
-        m1 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>").<span class="title">getMethod</span>("<span class="title">equals</span>",</span>
-                <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[] { <span class="title">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>") });</span>
-        m0 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>").<span class="title">getMethod</span>("<span class="title">hashCode</span>",</span>
-                <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[0]);</span>
-        m3 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">Subject</span>")</span>
-                .getMethod(<span class="string">"doService"</span>, <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[0]);</span>
-        m2 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>").<span class="title">getMethod</span>("<span class="title">toString</span>",</span>
-                <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[0]);</span>
-    } <span class="keyword">catch</span> (NoSuchMethodException nosuchmethodexception) {
-        <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchMethodError(nosuchmethodexception.getMessage());
-    } <span class="keyword">catch</span> (ClassNotFoundException classnotfoundexception) {
-        <span class="keyword">throw</span> <span class="keyword">new</span> NoClassDefFoundError(classnotfoundexception.getMessage());
-    }
-}
-}
-</code></pre><p>从代码可以看到，这个动态生成的类是继承了Proxy类并实现了Service接口，先获取到了equals<br>、hashCode、doservice和toString这四个函数对应的method对象，当调用相关方法时，使用反射机制调用各个方法。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1561,7 +1426,7 @@ static {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1575,7 +1440,7 @@ static {
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

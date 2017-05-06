@@ -296,7 +296,7 @@ H">
 <h5 id="Updating_and_committing_an_image">Updating and committing an image</h5><p>为了更新一个镜像，首先运行一个镜像<br>    docker run -ti training?sinatra /bin/bash</p>
 <p>在交互式的命令行中做修改更新：<br>    apt-get install -y ruby2.0-dev<br>    gem2.0 install json</p>
 <p>执行完毕之后使用exit退出。现在有一个你修改过的容器，你可以通过以下命令把该容器的一份拷贝生成镜像。<br>    docker commit -m “” -a “” container_id image_name</p>
-<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x78;&#120;&#x78;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x78;&#120;&#x78;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
+<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x78;&#120;&#x78;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x78;&#120;&#x78;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
 <p>有了Dockerfile使用docker build创建镜像<br>    docker build -t container_name .</p>
 <p>通过输出可以个看到，docker 会顺序的一条一条的执行Dockerfile中的命令。每个命令会创建一个新的容器，执行指令并提交修改，就像docker commit的工作原理一样</p>
 </span>
@@ -394,7 +394,7 @@ H">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -408,7 +408,7 @@ H">
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

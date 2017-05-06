@@ -210,6 +210,231 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/09/20160709-java-dynamic-proxy/" itemprop="url">
+                  20160709-java-dynamic-proxy
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-07-09T13:24:53+08:00" content="2016-07-09">
+              2016-07-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="java动态代理">java动态代理</h2><p>最近在看Spring AOP的实现方式，java动态代理是其基础，因此先研究了一下java动态代理。<br>java中的代理有下面两种</p>
+<ul>
+<li>静态代理：由程序员自己写代码实现的代理，编译成class文件并运行</li>
+<li>动态代理：在程序运行的时候，运用反射机制动态创建的字节码并加载到内存中。</li>
+</ul>
+<p>静态代理基本上很熟悉了，本文主要讨论动态代理的适用和原理。动态代理所使用到的几部分内容：</p>
+<ul>
+<li>抽象接口，真实对象实现所用的接口，同时作为Proxy.newProxyInstance的一个参数</li>
+<li>真实对象，真正执行逻辑运算的对象，由代理对象调用真实对象</li>
+<li>代理对象，代替真实对象接受访问请求，调用真实对象</li>
+</ul>
+<p>使用代理的好处是能够对一次函数调用做自己的订制，加一些必要的内容，比如打log等。<br>java动态代理主要使用的几个类在java.lang.reflect包中，包括Prxoy和InvocationHandler这两个类。下面是一个非常简单的java动态代理的例子。</p>
+<p>首先是声明一个接口</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">Service</span> {
+    <span class="function"><span class="keyword">public</span> Object <span class="title">doService</span>(<span class="params"></span>)</span>;
+}
+</code></pre><p>然后声明一个类实现这个接口</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealService</span> <span class="keyword">implements</span> <span class="title">Service</span></span>{
+<span class="keyword">private</span> String serviceName;
+<span class="function"><span class="keyword">public</span> <span class="title">RealService</span><span class="params">(String serviceName)</span></span>{
+    <span class="keyword">this</span>.serviceName=serviceName;
+}
+
+<span class="function"><span class="keyword">public</span> Object <span class="title">doService</span><span class="params">()</span> </span>{
+    System.out.println(<span class="string">"Service provided by "</span>+serviceName);
+    <span class="keyword">return</span> <span class="keyword">null</span>;
+}
+}
+</code></pre><p>声明一个类实现InvocationHandler</p>
+<pre><code>public class <span class="type">ServiceDynamicProxy</span> implements <span class="type">InvocationHandler</span>{
+private <span class="type">Object</span> obj;
+public <span class="type">ServiceDynamicProxy</span>(<span class="type">Object</span> obj){
+    this.obj=obj;
+}
+public <span class="type">Object</span> invoke(<span class="type">Object</span> proxy, <span class="type">Method</span> <span class="keyword">method</span>, <span class="type">Object</span>[] args)
+        throws <span class="type">Throwable</span> {
+    doPre();
+    <span class="keyword">method</span>.invoke(obj, args);
+    doPost();
+    <span class="keyword">return</span> null;
+}
+
+public <span class="type">void</span> doPre(){
+    <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"dynamic proxy do pre"</span>);
+}
+
+public <span class="type">void</span> doPost(){
+    <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"dynamic proxy do post"</span>);
+}
+}
+</code></pre><p>最后，写一段代码调用以上的代码即可</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Client</span> {
+<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span>{
+    RealService ser=<span class="keyword">new</span> RealService(<span class="string">"solid"</span>);
+    InvocationHandler ih=<span class="keyword">new</span> ServiceDynamicProxy(ser);
+    Class cls=ser.getClass();
+    Service service = (Service) Proxy.newProxyInstance(cls.getClassLoader(), cls.getInterfaces(), ih);
+    service.doService();
+}
+}
+</code></pre><p>通过查看Proxy的代码可以看到，Proxy使用ProxyGenerator来动态生成了一个类的字节码加载。</p>
+<pre><code>byte<span class="string">[]</span> proxyClassFile = ProxyGenerator.generateProxyClass(
+        proxyName, interfaces);
+</code></pre><p>反编译这个生成的class字节码(这部分从网上其<a href="http://www.cnblogs.com/flyoung2008/archive/2013/08/11/3251148.html" target="_blank" rel="external">他人的博客</a>中看到，我没有实际去反编译)</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxySubject</span> <span class="keyword">extends</span> <span class="title">Proxy</span> <span class="keyword">implements</span> <span class="title">Service</span> {</span>
+<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m1</span>;</span>
+<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m0</span>;</span>
+<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m3</span>;</span>
+<span class="keyword">private</span> static <span class="function"><span class="keyword">Method</span> <span class="title">m2</span>;</span>
+
+<span class="keyword">public</span> ProxySubject(InvocationHandler invocationhandler) {
+    <span class="variable">super</span>(invocationhandler);
+}
+
+<span class="keyword">public</span> <span class="keyword">final</span> boolean equals(Object obj) {
+    <span class="keyword">try</span> {
+        <span class="keyword">return</span> ((Boolean) <span class="variable">super</span>.h.invoke(this, m1, <span class="keyword">new</span> Object[] { obj }))
+                .booleanValue();
+    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
+    } <span class="keyword">catch</span> (Throwable throwable) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
+    }
+}
+
+<span class="keyword">public</span> <span class="keyword">final</span> int hashCode() {
+    <span class="keyword">try</span> {
+        <span class="keyword">return</span> ((Integer) <span class="variable">super</span>.h.invoke(this, m0, <span class="literal">null</span>)).intValue();
+    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
+    } <span class="keyword">catch</span> (Throwable throwable) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
+    }
+}
+
+<span class="keyword">public</span> <span class="keyword">final</span> void doService() {
+    <span class="keyword">try</span> {
+        <span class="variable">super</span>.h.invoke(this, m3, <span class="literal">null</span>);
+        <span class="keyword">return</span>;
+    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
+    } <span class="keyword">catch</span> (Throwable throwable) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
+    }
+}
+
+<span class="keyword">public</span> <span class="keyword">final</span> String toString() {
+    <span class="keyword">try</span> {
+        <span class="keyword">return</span> (String) <span class="variable">super</span>.h.invoke(this, m2, <span class="literal">null</span>);
+    } <span class="keyword">catch</span> (<span class="built_in">Error</span> _ex) {
+    } <span class="keyword">catch</span> (Throwable throwable) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(throwable);
+    }
+}
+
+static {
+    <span class="keyword">try</span> {
+        m1 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>").<span class="title">getMethod</span>("<span class="title">equals</span>",</span>
+                <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[] { <span class="title">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>") });</span>
+        m0 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>").<span class="title">getMethod</span>("<span class="title">hashCode</span>",</span>
+                <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[0]);</span>
+        m3 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">Subject</span>")</span>
+                .getMethod(<span class="string">"doService"</span>, <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[0]);</span>
+        m2 = <span class="class"><span class="keyword">Class</span>.<span class="title">forName</span>("<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span>").<span class="title">getMethod</span>("<span class="title">toString</span>",</span>
+                <span class="keyword">new</span> <span class="class"><span class="keyword">Class</span>[0]);</span>
+    } <span class="keyword">catch</span> (NoSuchMethodException nosuchmethodexception) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchMethodError(nosuchmethodexception.getMessage());
+    } <span class="keyword">catch</span> (ClassNotFoundException classnotfoundexception) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> NoClassDefFoundError(classnotfoundexception.getMessage());
+    }
+}
+}
+</code></pre><p>从代码可以看到，这个动态生成的类是继承了Proxy类并实现了Service接口，先获取到了equals<br>、hashCode、doservice和toString这四个函数对应的method对象，当调用相关方法时，使用反射机制调用各个方法。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/02/20160702-threadlocal/" itemprop="url">
                   threadlocal
                 </a>
@@ -1774,101 +1999,12 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/21/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-11-21T18:26:49+08:00" content="2015-11-21">
-              2015-11-21
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1909,7 +2045,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1923,7 +2059,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

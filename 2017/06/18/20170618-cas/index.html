@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="distributed," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -51,33 +51,19 @@
 
 
 
-<meta name="description" content="Monolithic architecture传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图
-
-这种架构的好处在于，易于开发，易于部署，易于水平扩展。缺点却是很明显
-
-不利于项目组中">
+<meta name="description" content="cas相关学习记录最近看了比较多的cas算法相关的文章，做一下纪录。cas就是compare and swap，需要三个值，存储中的实际的值，认为应该存储的值和要修改成的值。只有前两个相等的情况下，才能把要修改的值写入存储相应的位置中。
+从加锁开始先来看看最常见的一种处理并发访问安全性的方法：加锁。加锁这种机制内涵的思想是：程序的某处有多线程并发访问共享资源的情况，那么一定会出现问题。因此这是一种">
 <meta property="og:type" content="article">
-<meta property="og:title" content="micro service">
-<meta property="og:url" content="http://wyssurvivor.github.io/2016/03/10/20160310-micro-service/index.html">
+<meta property="og:title" content="20170618-cas">
+<meta property="og:url" content="http://wyssurvivor.github.io/2017/06/18/20170618-cas/index.html">
 <meta property="og:site_name" content="Ryan Wang">
-<meta property="og:description" content="Monolithic architecture传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图
-
-这种架构的好处在于，易于开发，易于部署，易于水平扩展。缺点却是很明显
-
-不利于项目组中">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-10%20%E4%B8%8B%E5%8D%8811.43.11.png">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-11%20%E4%B8%8A%E5%8D%8812.14.31.png">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%885.52.30.png">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.16.43.png">
-<meta property="og:image" content="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.28.40.png">
-<meta property="og:updated_time" content="2016-03-12T11:30:16.000Z">
+<meta property="og:description" content="cas相关学习记录最近看了比较多的cas算法相关的文章，做一下纪录。cas就是compare and swap，需要三个值，存储中的实际的值，认为应该存储的值和要修改成的值。只有前两个相等的情况下，才能把要修改的值写入存储相应的位置中。
+从加锁开始先来看看最常见的一种处理并发访问安全性的方法：加锁。加锁这种机制内涵的思想是：程序的某处有多线程并发访问共享资源的情况，那么一定会出现问题。因此这是一种">
+<meta property="og:updated_time" content="2017-06-18T13:45:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="micro service">
-<meta name="twitter:description" content="Monolithic architecture传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图
-
-这种架构的好处在于，易于开发，易于部署，易于水平扩展。缺点却是很明显
-
-不利于项目组中">
+<meta name="twitter:title" content="20170618-cas">
+<meta name="twitter:description" content="cas相关学习记录最近看了比较多的cas算法相关的文章，做一下纪录。cas就是compare and swap，需要三个值，存储中的实际的值，认为应该存储的值和要修改成的值。只有前两个相等的情况下，才能把要修改的值写入存储相应的位置中。
+从加锁开始先来看看最常见的一种处理并发访问安全性的方法：加锁。加锁这种机制内涵的思想是：程序的某处有多线程并发访问共享资源的情况，那么一定会出现问题。因此这是一种">
 
 
 
@@ -89,7 +75,7 @@
   };
 </script>
 
-  <title> micro service | Ryan Wang </title>
+  <title> 20170618-cas | Ryan Wang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -219,7 +205,7 @@
             
             
               
-                micro service
+                20170618-cas
               
             
           </h1>
@@ -228,8 +214,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-03-10T22:59:48+08:00" content="2016-03-10">
-              2016-03-10
+            <time itemprop="dateCreated" datetime="2017-06-18T20:15:46+08:00" content="2017-06-18">
+              2017-06-18
             </time>
           </span>
 
@@ -238,8 +224,20 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/architecture/" itemprop="url" rel="index">
-                    <span itemprop="name">architecture</span>
+                  <a href="/categories/language/" itemprop="url" rel="index">
+                    <span itemprop="name">language</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/language/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
                   </a>
                 </span>
 
@@ -267,57 +265,60 @@
       
 
       
-        <span itemprop="articleBody"><h2 id="Monolithic_architecture">Monolithic architecture</h2><p>传统的web项目架构是这样的，所有的后台逻辑放在一个项目中，这些逻辑可能是分层的，比如有表示层、逻辑层、数据层等，这些一起组成了一个项目。这种项目架构称为monolithic。例如，一个java项目被打包成一个war包，然后放到web server上去执行。如下图</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-10%20%E4%B8%8B%E5%8D%8811.43.11.png" alt="monolithic"></p>
-<p>这种架构的好处在于，易于开发，易于部署，易于水平扩展。<br>缺点却是很明显</p>
-<ul>
-<li>不利于项目组中的新人上手</li>
-<li>不利于做持续部署（不知道continuous deployment怎么翻译），为了修改一个模块而必须重新发布部署整个项目。</li>
-<li>数据库无法扩容，并且每个server实例都会访问所有的数据，使得数据库的缓存失效</li>
-<li>团队开发合并代码出现冲突概率更大</li>
-<li>…</li>
+        <span itemprop="articleBody"><h2 id="cas相关学习记录">cas相关学习记录</h2><p>最近看了比较多的cas算法相关的文章，做一下纪录。cas就是compare and swap，需要三个值，存储中的实际的值，认为应该存储的值和要修改成的值。只有前两个相等的情况下，才能把要修改的值写入存储相应的位置中。</p>
+<h3 id="从加锁开始">从加锁开始</h3><p>先来看看最常见的一种处理并发访问安全性的方法：加锁。加锁这种机制内涵的思想是：程序的某处有多线程并发访问共享资源的情况，那么一定会出现问题。因此这是一种悲观的心态，也就是悲观锁。另外一种机制思想与其恰恰相反－－乐观锁。<br>乐观锁认为多线程并发访问共享资源不会有安全性问题，如果发现有问题就处理这个问题，而不是先入为主的认为一定会出现问题。cas其实就是一种乐观锁的思想的应用实现。</p>
+<h3 id="锁和cas各自的开销">锁和cas各自的开销</h3><p>锁，加锁和释放锁是一个内核态的行为，而代码常常是运行在用户态，因此，频发的加锁和释放锁会在用户态和内核态切换，开销较大。而且，在使用锁时，线程在等待锁的时候会被挂起，获得锁之后会被唤醒，这种切换也会开销比较大。<br>cas操作也是有开销的，具体查看参考文献1中的内容。</p>
+<h3 id="cas算法">cas算法</h3><pre><code>do {
+    old<span class="number">_</span><span class="keyword">value</span> = get<span class="number">_</span>old<span class="number">_</span><span class="keyword">value</span>()
+    <span class="keyword">new</span><span class="number">_</span><span class="keyword">value</span> = generate<span class="number">_n</span>ew<span class="number">_</span><span class="keyword">value</span><span class="number">_</span>according<span class="number">_</span>to<span class="number">_</span>old<span class="number">_</span><span class="keyword">value</span>()
+} <span class="keyword">while</span>(!CAS(old<span class="number">_</span><span class="keyword">value</span>, <span class="keyword">new</span><span class="number">_</span><span class="keyword">value</span>))
+</code></pre><p>类似于上面的算法。</p>
+<h3 id="cas算法在jdk中的应用">cas算法在jdk中的应用</h3><p>java中有一些类用到了cas算法。<br>首先Unsafe类，其实现都是native的，它给出了一些cas方法供其他类调用，java.util.concurrent.atomic中的类基本上都是用这个类提供的方法实现的。下面是AtomicLong.incrementAndGet()的实现</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">long</span> incrementAndGet() {
+    <span class="keyword">for</span>(;;) {
+        <span class="keyword">long</span> oldValue = get();
+        <span class="keyword">long</span> <span class="keyword">next</span> = oldValue+<span class="number">1</span>;
+        <span class="keyword">if</span>(compareAndSet(oldValue, <span class="keyword">next</span>)) {
+            <span class="keyword">return</span> <span class="keyword">next</span>;
+        }
+    }
+}
+</code></pre><p>Jdk中的ConcurrentLinkedQueue的实现也是实用cas算法实现的，后面会研究一下再写一篇。</p>
+<h3 id="cas算法在日常开发中的应用">cas算法在日常开发中的应用</h3><h4 id="实现一个栈">实现一个栈</h4><p>由于栈只在栈顶操作，因此只需要维护栈顶一个变量，因此，使用cas操作非常简单。</p>
+<pre><code><span class="keyword">class</span> <span class="title">ConcurrentStack</span> {
+    <span class="keyword">class</span> <span class="title">Node</span> {
+        final <span class="keyword">int</span> <span class="keyword">value</span>;
+        Node next;
+        <span class="function"><span class="keyword">public</span> <span class="title">Node</span>(<span class="params"><span class="keyword">int</span> <span class="keyword">value</span></span>) </span>{<span class="keyword">this</span>.<span class="keyword">value</span> = <span class="keyword">value</span>;}
+    }
+
+    AtomicReference&lt;Node&gt; top = AtomicRefernce&lt;Node&gt;();
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span>(<span class="params"><span class="keyword">int</span> <span class="keyword">value</span></span>) </span>{
+        Node newTop = <span class="keyword">new</span> Node(<span class="keyword">value</span>);
+        Node oldTop = <span class="keyword">null</span>;
+        <span class="keyword">do</span> {
+            oldTop = top.<span class="keyword">get</span>();
+            newTop.next = oldTop;
+        } <span class="keyword">while</span>(!top.compareAndSet(oldTop, newTop))
+    }
+
+    <span class="function"><span class="keyword">public</span> Node <span class="title">pop</span> (<span class="params"></span>) </span>{
+        Node newTop = <span class="keyword">null</span>,oldTop = <span class="keyword">null</span>;
+        <span class="keyword">do</span> {
+            oldTop = top.<span class="keyword">get</span>();
+            <span class="keyword">if</span>(oldTop == <span class="keyword">null</span>) {
+                <span class="keyword">return</span> <span class="keyword">null</span>;
+            }
+            newTop = oldTop.next;
+        }<span class="keyword">while</span>(!top.compareAndSet(oldTop, newTop));
+        <span class="keyword">return</span> newTop;
+    }
+}
+</code></pre><h4 id="cas实现非阻塞链表">cas实现非阻塞链表</h4><p>对于链表，用cas实现的时候就有问题了，因为链表中添加一个新节点的时候通常要修改两个引用，前一个节点的next，和队列的尾指针。此时，需要两个cas操作修改两个变量，这就不是一个原子操作了，如果第一个执行完了，第二个执行失败了怎么办？对于这种情况，可以让发现问题的线程帮助其他线程完成操作。具体看参考1<br>github上的一个lockfree的队列实现<a href="https://github.com/LMAX-Exchange/disruptor" target="_blank" rel="external">disruptor</a></p>
+<h2 id="参考文献">参考文献</h2><ul>
+<li><a href="http://www.cnblogs.com/Mainz/p/3546347.html" target="_blank" rel="external">非阻塞同步算法与CAS(Compare and Swap)无锁算法</a></li>
 </ul>
-<h2 id="Microservices_architechture">Microservices architechture</h2><p>为了解决monolithic架构的问题，最近几年业界提出了micro service的架构，而且这种架构在实际运用中使用的越来越广泛。<br>这种架构引入了<a href="http://microservices.io/articles/scalecube.html" target="_blank" rel="external">scale cube</a>的思想,把一整个项目按照功能区分为很多个不同的service，每个service提供一个核心的功能歌，并且只做这一件事情。比如说，电商系统架构包含支付服务、物品信息服务、用户管理服务、订单服务等。<br>服务之间的通信使用同步协议如http／rest／thrift，或者异步协议。<br>服务的部署是相互分割开来的。每个service有自己的数据库</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-11%20%E4%B8%8A%E5%8D%8812.14.31.png" alt="microservice"></p>
-<p>这种架构的缺点</p>
-<ul>
-<li>难测试</li>
-<li>需要处理服务之间的信息交互问题</li>
-<li>这种架构提升了部署和管理系统的复杂度<br>这种架构的优点</li>
-<li>每个服务专注于一个目的，小而精</li>
-<li>服务单独部署</li>
-<li>能有效的隔离系统错误，某个服务出现问题，并不会影响其他的服务</li>
-</ul>
-<p>我的疑问？如果每个服务有自己的数据库，那么如果在需要联合查询的场景下，微服务架构怎么解决这个问题？<a href="http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015" target="_blank" rel="external">http://www.slideshare.net/chris.e.richardson/developing-eventdriven-microservices-with-event-sourcing-and-cqrs-svcc-svcc2015</a></p>
-<h2 id="API_Gateway">API Gateway</h2><p>如果用微服务的架构开发一个电商网站，产品详情页可能需要用到的服务有产品信息服务、价格服务、订单服务、库存服务等。那么一些问题也随之而来</p>
-<ul>
-<li>因为微服务架构下，没个服务都是专注的，那么整个系统中会有很多服务</li>
-<li>不同的客户端需要不同的数据</li>
-<li>服务的实例的数量和地址会动态变化的</li>
-<li>服务划分的过程应该是对客户端透明的。</li>
-</ul>
-<p>在这些服务前面加上一层，就能有效解决上面这些问题，这就是api gateway</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%885.52.30.png" alt="api gateway"></p>
-<p>加入API Gateway的好处是</p>
-<ul>
-<li>把服务的划分跟客户端分隔开</li>
-<li>客户端不需要知道也不关心这些服务的位置</li>
-<li>为不同类型的客户端选择最合适的服务</li>
-<li>把调用服务的逻辑放在 api gateway层，简化了客户端</li>
-</ul>
-<p>这种方法有两个缺点</p>
-<ul>
-<li>api gateway需要开发和维护</li>
-<li>增加了一次客户端调用返回的总时间</li>
-</ul>
-<h2 id="Client-side_service_discovery">Client-side service discovery</h2><p>服务之间也会相互调用。在monolithic架构下，服务调用是通过语言层上的函数调用实现的。在传统架构下，我们知道服务的固定的地址，因此可以轻易的调用它。<br>然而，在微服务架构下，服务的地址和实例数量都会变得，而且服务很可能跑在虚拟容器中，它的ip也是会变得。因此，我们需要解决的问题就是让服务的客户端能够向动态变化的服务实力集合发起访问。API Gateway，作为服务的客户端，该如何发现服务实例。解决方案如下图</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.16.43.png" alt="clientside discovery"></p>
-<h2 id="Server-side_service_discovery">Server-side service discovery</h2><p>对于前面提出的服务发现问题，还有一种Server side discovery的方法。客户端在要访问某个服务时，客户端先访问一个router（部署在固定的网络地址），这个router向service registry发起查询，然后向服务的某个实例发起访问。</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-03-12%20%E4%B8%8B%E5%8D%886.28.40.png" alt="serverside discovery"></p>
-<p>与client－side service discovery相比，server side discovery的客户端代码更简单，然而却增加了更多的网络访问步骤。</p>
-<h2 id="Service_registry">Service registry</h2><p>前两节提到的，关于服务注册。相当于一个存储服务信息的数据库，存储了实例信息和地址等信息。当服务实例启动的时候，在注册服务注册自己，实例停止的时候，告知注册服务。eureka、zookeeper等是现有的service registry。<br>服务的客户端可以通过service registry 发现服务。然而，这也给整个架构带来风险，一旦service registry down掉，整个架构都不可用。</p>
-<h2 id="Self_registration">Self registration</h2><p>如何实现service registry，服务必须在启动和关闭的时候注册，并且当服务crash 的时候也需要unregistry。因此，服务必须周期性的更新自得信息，重新注册。<br>使用zookeeper作service registry。没个服务对应zookeeper中的一个znode。在服务的一个实例启动的时候，在zookeeper该服务的znode节点下新家一个临时性的znode节点，标示一个实例。该节点包含了服务实例的地址信息。客户端取到该服务下的所有节点来决定调用哪个实例。如果实例非法推出，没有从zookeeper删除节点，则zookeeper会在过期时间到的时候删除节点</p>
-<h2 id="3rd_Party_Registry">3rd Party Registry</h2><p>加入第三方注册器来负责服务的注册。<br>这种方式可以简化服务代码，服务并不需要考虑注册的问题。</p>
 </span>
       
     </div>
@@ -326,7 +327,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/distributed/" rel="tag">#distributed</a>
+            <a href="/tags/java/" rel="tag">#java</a>
           
         </div>
       
@@ -335,17 +336,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/06/20160306-message-queue-system-of-xiecheng/" rel="next" title="携程消息系统学习笔记1">
-                <i class="fa fa-chevron-left"></i> 携程消息系统学习笔记1
+              <a href="/2017/05/06/20170506-https-theory/" rel="next" title="20170506-https-theory">
+                <i class="fa fa-chevron-left"></i> 20170506-https-theory
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/02/20160702-threadlocal/" rel="prev" title="threadlocal">
-                threadlocal <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -459,7 +456,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Monolithic_architecture"><span class="nav-number">1.</span> <span class="nav-text">Monolithic architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Microservices_architechture"><span class="nav-number">2.</span> <span class="nav-text">Microservices architechture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API_Gateway"><span class="nav-number">3.</span> <span class="nav-text">API Gateway</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-side_service_discovery"><span class="nav-number">4.</span> <span class="nav-text">Client-side service discovery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-side_service_discovery"><span class="nav-number">5.</span> <span class="nav-text">Server-side service discovery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Service_registry"><span class="nav-number">6.</span> <span class="nav-text">Service registry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Self_registration"><span class="nav-number">7.</span> <span class="nav-text">Self registration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3rd_Party_Registry"><span class="nav-number">8.</span> <span class="nav-text">3rd Party Registry</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#cas相关学习记录"><span class="nav-number">1.</span> <span class="nav-text">cas相关学习记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从加锁开始"><span class="nav-number">1.1.</span> <span class="nav-text">从加锁开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁和cas各自的开销"><span class="nav-number">1.2.</span> <span class="nav-text">锁和cas各自的开销</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cas算法"><span class="nav-number">1.3.</span> <span class="nav-text">cas算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cas算法在jdk中的应用"><span class="nav-number">1.4.</span> <span class="nav-text">cas算法在jdk中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cas算法在日常开发中的应用"><span class="nav-number">1.5.</span> <span class="nav-text">cas算法在日常开发中的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现一个栈"><span class="nav-number">1.5.1.</span> <span class="nav-text">实现一个栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cas实现非阻塞链表"><span class="nav-number">1.5.2.</span> <span class="nav-text">cas实现非阻塞链表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

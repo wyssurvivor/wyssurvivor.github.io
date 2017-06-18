@@ -210,6 +210,167 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/18/20170618-cas/" itemprop="url">
+                  20170618-cas
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-06-18T20:15:46+08:00" content="2017-06-18">
+              2017-06-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/language/" itemprop="url" rel="index">
+                    <span itemprop="name">language</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/language/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="cas相关学习记录">cas相关学习记录</h2><p>最近看了比较多的cas算法相关的文章，做一下纪录。cas就是compare and swap，需要三个值，存储中的实际的值，认为应该存储的值和要修改成的值。只有前两个相等的情况下，才能把要修改的值写入存储相应的位置中。</p>
+<h3 id="从加锁开始">从加锁开始</h3><p>先来看看最常见的一种处理并发访问安全性的方法：加锁。加锁这种机制内涵的思想是：程序的某处有多线程并发访问共享资源的情况，那么一定会出现问题。因此这是一种悲观的心态，也就是悲观锁。另外一种机制思想与其恰恰相反－－乐观锁。<br>乐观锁认为多线程并发访问共享资源不会有安全性问题，如果发现有问题就处理这个问题，而不是先入为主的认为一定会出现问题。cas其实就是一种乐观锁的思想的应用实现。</p>
+<h3 id="锁和cas各自的开销">锁和cas各自的开销</h3><p>锁，加锁和释放锁是一个内核态的行为，而代码常常是运行在用户态，因此，频发的加锁和释放锁会在用户态和内核态切换，开销较大。而且，在使用锁时，线程在等待锁的时候会被挂起，获得锁之后会被唤醒，这种切换也会开销比较大。<br>cas操作也是有开销的，具体查看参考文献1中的内容。</p>
+<h3 id="cas算法">cas算法</h3><pre><code>do {
+    old<span class="number">_</span><span class="keyword">value</span> = get<span class="number">_</span>old<span class="number">_</span><span class="keyword">value</span>()
+    <span class="keyword">new</span><span class="number">_</span><span class="keyword">value</span> = generate<span class="number">_n</span>ew<span class="number">_</span><span class="keyword">value</span><span class="number">_</span>according<span class="number">_</span>to<span class="number">_</span>old<span class="number">_</span><span class="keyword">value</span>()
+} <span class="keyword">while</span>(!CAS(old<span class="number">_</span><span class="keyword">value</span>, <span class="keyword">new</span><span class="number">_</span><span class="keyword">value</span>))
+</code></pre><p>类似于上面的算法。</p>
+<h3 id="cas算法在jdk中的应用">cas算法在jdk中的应用</h3><p>java中有一些类用到了cas算法。<br>首先Unsafe类，其实现都是native的，它给出了一些cas方法供其他类调用，java.util.concurrent.atomic中的类基本上都是用这个类提供的方法实现的。下面是AtomicLong.incrementAndGet()的实现</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">long</span> incrementAndGet() {
+    <span class="keyword">for</span>(;;) {
+        <span class="keyword">long</span> oldValue = get();
+        <span class="keyword">long</span> <span class="keyword">next</span> = oldValue+<span class="number">1</span>;
+        <span class="keyword">if</span>(compareAndSet(oldValue, <span class="keyword">next</span>)) {
+            <span class="keyword">return</span> <span class="keyword">next</span>;
+        }
+    }
+}
+</code></pre><p>Jdk中的ConcurrentLinkedQueue的实现也是实用cas算法实现的，后面会研究一下再写一篇。</p>
+<h3 id="cas算法在日常开发中的应用">cas算法在日常开发中的应用</h3><h4 id="实现一个栈">实现一个栈</h4><p>由于栈只在栈顶操作，因此只需要维护栈顶一个变量，因此，使用cas操作非常简单。</p>
+<pre><code><span class="keyword">class</span> <span class="title">ConcurrentStack</span> {
+    <span class="keyword">class</span> <span class="title">Node</span> {
+        final <span class="keyword">int</span> <span class="keyword">value</span>;
+        Node next;
+        <span class="function"><span class="keyword">public</span> <span class="title">Node</span>(<span class="params"><span class="keyword">int</span> <span class="keyword">value</span></span>) </span>{<span class="keyword">this</span>.<span class="keyword">value</span> = <span class="keyword">value</span>;}
+    }
+
+    AtomicReference&lt;Node&gt; top = AtomicRefernce&lt;Node&gt;();
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span>(<span class="params"><span class="keyword">int</span> <span class="keyword">value</span></span>) </span>{
+        Node newTop = <span class="keyword">new</span> Node(<span class="keyword">value</span>);
+        Node oldTop = <span class="keyword">null</span>;
+        <span class="keyword">do</span> {
+            oldTop = top.<span class="keyword">get</span>();
+            newTop.next = oldTop;
+        } <span class="keyword">while</span>(!top.compareAndSet(oldTop, newTop))
+    }
+
+    <span class="function"><span class="keyword">public</span> Node <span class="title">pop</span> (<span class="params"></span>) </span>{
+        Node newTop = <span class="keyword">null</span>,oldTop = <span class="keyword">null</span>;
+        <span class="keyword">do</span> {
+            oldTop = top.<span class="keyword">get</span>();
+            <span class="keyword">if</span>(oldTop == <span class="keyword">null</span>) {
+                <span class="keyword">return</span> <span class="keyword">null</span>;
+            }
+            newTop = oldTop.next;
+        }<span class="keyword">while</span>(!top.compareAndSet(oldTop, newTop));
+        <span class="keyword">return</span> newTop;
+    }
+}
+</code></pre><h4 id="cas实现非阻塞链表">cas实现非阻塞链表</h4><p>对于链表，用cas实现的时候就有问题了，因为链表中添加一个新节点的时候通常要修改两个引用，前一个节点的next，和队列的尾指针。此时，需要两个cas操作修改两个变量，这就不是一个原子操作了，如果第一个执行完了，第二个执行失败了怎么办？对于这种情况，可以让发现问题的线程帮助其他线程完成操作。具体看参考1<br>github上的一个lockfree的队列实现<a href="https://github.com/LMAX-Exchange/disruptor" target="_blank" rel="external">disruptor</a></p>
+<h2 id="参考文献">参考文献</h2><ul>
+<li><a href="http://www.cnblogs.com/Mainz/p/3546347.html" target="_blank" rel="external">非阻塞同步算法与CAS(Compare and Swap)无锁算法</a></li>
+</ul>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/05/06/20170506-https-theory/" itemprop="url">
                   20170506-https-theory
                 </a>
@@ -850,7 +1011,7 @@ Poured from bottle on <span class="number">2017</span>-<span class="number">03</
 <h5 id="Updating_and_committing_an_image">Updating and committing an image</h5><p>为了更新一个镜像，首先运行一个镜像<br>    docker run -ti training?sinatra /bin/bash</p>
 <p>在交互式的命令行中做修改更新：<br>    apt-get install -y ruby2.0-dev<br>    gem2.0 install json</p>
 <p>执行完毕之后使用exit退出。现在有一个你修改过的容器，你可以通过以下命令把该容器的一份拷贝生成镜像。<br>    docker commit -m “” -a “” container_id image_name</p>
-<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x78;&#120;&#x78;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x78;&#120;&#x78;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
+<h5 id="Building_an_image_from_a_Dockerfile">Building an image from a Dockerfile</h5><p>创建一个目录和一个Dockerfile。Dockerfile中每一条命令都会创建一个文件层<br>    FROM ubuntu:14.04<br>    MAINTAINER xxx <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#x78;&#x78;&#120;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#x78;&#x78;&#120;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a><br>    RUN apt-get update &amp;&amp; apt-get install -y ruby ruby-dev<br>    RUN gem install sinatra</p>
 <p>有了Dockerfile使用docker build创建镜像<br>    docker build -t container_name .</p>
 <p>通过输出可以个看到，docker 会顺序的一条一条的执行Dockerfile中的命令。每个命令会创建一个新的容器，执行指令并提交修改，就像docker commit的工作原理一样</p>
 
@@ -1225,161 +1386,6 @@ Poured from bottle on <span class="number">2017</span>-<span class="number">03</
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/17/20160717-a-successful-git-branching-model/" itemprop="url">
-                  20160717-a-successful-git-branching-model
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-07-17T13:48:48+08:00" content="2016-07-17">
-              2016-07-17
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h2 id="A_successful_git_branching_model">A successful git branching model</h2><p>最近组里刚刚从svn迁移到了git，本以为自己对于git已经有足够的了解了，没想到真正与团队协作开发的时候还是碰到了一些问题，于是还是上网查了一些资料，继续学习。本文实际上是一篇<a href="http://nvie.com/posts/a-successful-git-branching-model/#creating-a-feature-branch" target="_blank" rel="external">A successful git branching model</a>的学习笔记。</p>
-<p>不是说一定要完全按照这篇文章作者所描述的那样使用git，只是这篇文章是提供了一套挺完备的开发流程，能够引起我对于自己日常使用git的一些思考。根据这篇文章的介绍的branching经验方法，结合自己的实际情况，应该能够总结出一套更好的也是更适合自己的开发流程。</p>
-<p><img src="http://7xojgs.com1.z0.glb.clouddn.com/git-model@2x.png" alt="branching pic"></p>
-<p>上图基本上就是这个branching model的一个总览图，其中的思想基本上都在里面了。下面详细说明一下。</p>
-<h3 id="main_branches">main branches</h3><p>在远程仓库中，有两条分支是始终存在的</p>
-<ul>
-<li>origin/master</li>
-<li>origin/develop</li>
-</ul>
-<p>origin/master分支始终处于可上线状态或者已上线状态。origin／develop分支包含了开发者最新的修改。如果develop分支的代码都没有问题了，就可以合并到master分支了，真正合并的时候没这么简单，下面再说。</p>
-<h3 id="supporting_branches">supporting branches</h3><p>为了协助团队成员间的并行开发、特性分支纪录、代码上线和快速bugfix，提供了supporting branches。所不同的是，这些分支并不是一直存在的，只要完成使命，就会被删掉。</p>
-<ul>
-<li>feature branches</li>
-<li>release branches</li>
-<li>hotfix branches</li>
-</ul>
-<p>这些分支都有其特殊的用途。</p>
-<h4 id="feature_branches">feature branches</h4><p>May branch off from：develop</p>
-<p>Must merge back into：develop</p>
-<p>Branch naming convention:anything except master, develop, release-, or hotfix-</p>
-<p>feature branches 是用来开发新功能的分支。当开发一个新功能时，开发者不确定什么时候能够上线。feature branches可以一直存在，直到代码提交被合并到develop或者丢弃。feature braches通常情况下只存在于开发者的本地代码库中，而不在远程库中。</p>
-<p>feature branch的创建</p>
-<pre><code>git checkout －<span class="tag">b</span> myfeature develop
-</code></pre><p>在myfeature分支开发完成后，合并到develop分支，然后推送到远程库origin／develop中</p>
-<pre><code>git checkout develop <span class="comment">//切换本地分支</span>
-git <span class="keyword">merge</span> --<span class="keyword">no</span>-ff myfeature <span class="comment">//在本地进行合并操作</span>
-git branch -<span class="keyword">d</span> myfeature <span class="comment">//删除myfeature分支</span>
-git push origin develop <span class="comment">//推送到origin/develop</span>
-</code></pre><p>–no-ff 是取消fast forward的意思，强制在合并的时候生成一个新的commit，即使在能够fast forword的情况下。这样能够防止丢失feature branch的信息，因为后面会删除这个feature branch，如果使用了fast forward，那么feature branch的信息就没了。</p>
-<h4 id="release_branches">release branches</h4><p>May branch off from:develop</p>
-<p>Must merge back into:develop &amp; master</p>
-<p>Branch naming convention: release-*</p>
-<p>release branch是为了协助代码上线的分支，可以在此分支上做测试、修复bug、该metadata信息等。</p>
-<p>创建release branch</p>
-<pre><code>git checkout -<span class="tag">b</span> release-<span class="number">1.2</span> develop
-./bump-version<span class="class">.sh</span> <span class="number">1.2</span>
-git commit -<span class="tag">a</span> -m <span class="string">"Bumped version number to 1.2"</span>
-</code></pre><p>在这里可以做一些bug修复等小工作，不适合做包含大量代码修改的工作。当代码修改完毕并通过测试的时候，这时的代码已经可以上线了，先把代码合并到master分支，然后合并到develop分支</p>
-<pre><code>git checkout <span class="keyword">master</span>
-<span class="title">git</span> merge --no-ff release-<span class="number">1.2</span>
-git <span class="keyword">tag</span> <span class="title">-a</span> <span class="number">1.2</span>
-git checkout develop
-git merge --no-ff release-<span class="number">1.2</span>
-git branch -d release-<span class="number">1.2</span>
-</code></pre><h4 id="hotfix_branches">hotfix branches</h4><p>May branch off from:master</p>
-<p>Must merge back into:develop&amp;master</p>
-<p>Branch naming convention:hotfix-* </p>
-<p>我的理解是hotfix branch的作用是可以进行紧急bug修复。创建一个hotfix branch</p>
-<pre><code>git checkout -<span class="tag">b</span> hotfix-<span class="number">1.2</span>.<span class="number">1</span> master
-./bump-version<span class="class">.sh</span> <span class="number">1.2</span>.<span class="number">1</span>
-git commit -<span class="tag">a</span> -m <span class="string">"Bumped version number to 1.2.1"</span>
-</code></pre><p>像release branch一样，修复完bug之后，把commit合并到master和develop</p>
-<pre><code>git checkout master
-git merge --no-ff hotfix-<span class="number">1.2</span><span class="number">.1</span>
-git tag -a <span class="number">1.2</span><span class="number">.1</span>
-git checkout develop
-git merge --no-ff hotfix-<span class="number">1.2</span><span class="number">.1</span>
-git branch -d hotfix-<span class="number">1.2</span><span class="number">.1</span>
-</code></pre><p>需要注意的是，如果此时有release branch，应该合并commit到release branch而不是develop branch</p>
-<p>大体上这篇文章的内容就是这样。当我写到这里的时候，我发现我们组的实际情况其实是与这些有些冲突的，因此到底该怎么做，还是要做一番思考的。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1426,14 +1432,14 @@ git branch -d hotfix-<span class="number">1.2</span><span class="number">.1</spa
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>

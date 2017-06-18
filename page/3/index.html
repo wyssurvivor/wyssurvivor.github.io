@@ -187,6 +187,11 @@
 
     
     
+      
+      
+
+      
+    
 
     
       
@@ -210,8 +215,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/11/21/hello-world/" itemprop="url">
-                  Hello World
+                <a class="post-title-link" href="/2015/11/21/20151121-deploymavenproject/" itemprop="url">
+                  eclipse创建maven spring项目并设置自动部署到tomcat
                 </a>
               
             
@@ -221,11 +226,26 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-21T18:26:49+08:00" content="2015-11-21">
+            <time itemprop="dateCreated" datetime="2015-11-21T20:17:16+08:00" content="2015-11-21">
               2015-11-21
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -248,15 +268,303 @@
         
           <span itemprop="articleBody">
             
-              <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+              <h3 id="eclipse创建maven_spring项目并设置自动部署到tomcat">eclipse创建maven spring项目并设置自动部署到tomcat</h3><h4 id="安装maven">安装maven</h4><p>brew install homebrew/versions/maven30<br>mac上通过homebrew安装maven 3，之前一直使用maven 2，这次在mac上装maven用的3</p>
+<h4 id="创建maven_web项目">创建maven web项目</h4><p>这个没什么可说的，直接用eclipse创建maven项目，选择maven－archetype-webapp就可以了。比较新的版本的eclipse自带maven，然而我还是在第一步安装了maven，因为我想要自己部署项目到tomcat</p>
+<h4 id="spring_项目设置">spring 项目设置</h4><p>要编写spring代码有一些代码是需要设置的</p>
+<blockquote>
+<p>pom.xml,在pom文件中加入相关的依赖</p>
+</blockquote>
+<pre><code><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>MavenTest<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>tan.maven.springmvc<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+<span class="tag">&lt;<span class="title">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+<span class="tag">&lt;<span class="title">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+<span class="tag">&lt;<span class="title">name</span>&gt;</span>tan.maven.springmvc Maven Webapp<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+<span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
+<span class="tag">&lt;<span class="title">properties</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="title">project.build.sourceEncoding</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">springversion</span>&gt;</span>3.1.1.RELEASE<span class="tag">&lt;/<span class="title">springversion</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">junitversion</span>&gt;</span>3.8.1<span class="tag">&lt;/<span class="title">junitversion</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${junitversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-aop<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-asm<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-aspects<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-beans<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-context-support<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-expression<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-jdbc<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-jms<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-orm<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-oxm<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-tx<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-web<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-webmvc<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-test<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>${springversion}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>jstl<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>commons-collections<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>commons-collections<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>3.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">build</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">finalName</span>&gt;</span>tan-springmvc-book<span class="tag">&lt;/<span class="title">finalName</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">build</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><blockquote>
+<p>web.xml</p>
+</blockquote>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">version</span>=<span class="value">"3.0"</span> <span class="attribute">xmlns</span>=<span class="value">"http://java.sun.com/xml/ns/javaee"</span>
+<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://java.sun.com/xml/ns/javaee 
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">display-name</span>&gt;</span><span class="tag">&lt;/<span class="title">display-name</span>&gt;</span>
+<span class="tag">&lt;<span class="title">welcome-file-list</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">welcome-file</span>&gt;</span>index.jsp<span class="tag">&lt;/<span class="title">welcome-file</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">welcome-file-list</span>&gt;</span>
+
+    <span class="comment">&lt;!-- Spring的log4j监听器 --&gt;</span>
+<span class="tag">&lt;<span class="title">listener</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">listener-class</span>&gt;</span>org.springframework.web.util.Log4jConfigListener<span class="tag">&lt;/<span class="title">listener-class</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">listener</span>&gt;</span>
+
+<span class="comment">&lt;!-- 核心控制器 --&gt;</span>
+<span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>book<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>/WEB-INF/applicationContext.xml<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="title">load-on-startup</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">listener</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="tag">&lt;/<span class="title">listener-class</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">listener</span>&gt;</span>
+<span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>book<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
+</code></pre><blockquote>
+<p>applicationContext.xml</p>
+</blockquote>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span> 
+   <span class="attribute">xmlns:aop</span>=<span class="value">"http://www.springframework.org/schema/aop"</span> 
+   <span class="attribute">xmlns:context</span>=<span class="value">"http://www.springframework.org/schema/context"</span>
+   <span class="attribute">xmlns:mvc</span>=<span class="value">"http://www.springframework.org/schema/mvc"</span> 
+   <span class="attribute">xmlns:tx</span>=<span class="value">"http://www.springframework.org/schema/tx"</span> 
+   <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+   <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+    http://www.springframework.org/schema/tx 
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">mvc:annotation-driven</span> /&gt;</span>
+<span class="tag">&lt;<span class="title">context:component-scan</span> <span class="attribute">base-package</span>=<span class="value">"com.ssdut.*"</span> /&gt;</span>
+
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"org.springframework.web.servlet.view.InternalResourceViewResolver"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"prefix"</span> <span class="attribute">value</span>=<span class="value">"/"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"suffix"</span> <span class="attribute">value</span>=<span class="value">".jsp"</span> /&gt;</span>
+<span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><p>以上，基本完成了spring项目的基本配置，可以写代码了。</p>
+<h4 id="一键部署到tomcat">一键部署到tomcat</h4><p>在写完业务逻辑代码之后，可以开始着手部署了。</p>
+<blockquote>
+<p>apache-tomcat 配置conf/tomcat-users.xml。在里面加入tomcat manager访问权限。此处注意不要写在注释里面了，我第一次搞的时候没注意，写在注释里面了，结果tomcat manager一直登陆不上去，浪费了很多时间。</p>
+</blockquote>
+<pre><code><span class="tag">&lt;<span class="title">tomcat-users</span>&gt;</span>
+
+
+<span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"admin-gui"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"admin-script"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"manager-gui"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"manager-script"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"manager-jmx"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"manager-status"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">user</span> <span class="attribute">username</span>=<span class="value">"admin"</span> <span class="attribute">password</span>=<span class="value">"admin"</span> <span class="attribute">roles</span>=<span class="value">"manager-gui,manager-script,manager-jmx,manager-status,admin-script,admin-gui"</span>/&gt;</span>
+
+<span class="tag">&lt;/<span class="title">tomcat-users</span>&gt;</span>
+</code></pre><blockquote>
+<p>maven配置，让能够访问tomcat，这个地方应该是需要权限。</p>
+</blockquote>
+<pre><code><span class="tag">&lt;<span class="title">servers</span>&gt;</span>
+
+<span class="comment">&lt;!-- 配置tomcat-/manager/text 访问权限 --&gt;</span>
+<span class="tag">&lt;<span class="title">server</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">id</span>&gt;</span>tomcat7<span class="tag">&lt;/<span class="title">id</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">username</span>&gt;</span>admin<span class="tag">&lt;/<span class="title">username</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">password</span>&gt;</span>admin<span class="tag">&lt;/<span class="title">password</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">server</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">servers</span>&gt;</span>
+</code></pre><blockquote>
+<p>pom.xml 加入build,并配置tomcat7的maven插件</p>
+</blockquote>
+<pre><code><span class="tag">&lt;<span class="title">build</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">finalName</span>&gt;</span>myApp<span class="tag">&lt;/<span class="title">finalName</span>&gt;</span>
+    <span class="comment">&lt;!-- directory缺省情况下指向target --&gt;</span> 
+    <span class="comment">&lt;!--&lt;directory&gt;${basedir}/target&lt;/directory&gt;--&gt;</span>
+    <span class="tag">&lt;<span class="title">plugins</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">plugin</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">configuration</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://localhost:8080/manager/text<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
+                <span class="comment">&lt;!-- server、username、password对应maven的setting下的配置 --&gt;</span>
+                <span class="tag">&lt;<span class="title">server</span>&gt;</span>tomcat7<span class="tag">&lt;/<span class="title">server</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">username</span>&gt;</span>admin<span class="tag">&lt;/<span class="title">username</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">password</span>&gt;</span>admin<span class="tag">&lt;/<span class="title">password</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">path</span>&gt;</span>/${project.build.finalName}<span class="tag">&lt;/<span class="title">path</span>&gt;</span>
+                <span class="comment">&lt;!-- war文件路径缺省情况下指向target --&gt;</span>
+                <span class="comment">&lt;!--&lt;warFile&gt;${basedir}/target/${project.build.finalName}.war&lt;/warFile&gt;--&gt;</span>
+            <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">plugin</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">plugins</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">build</span>&gt;</span>
+</code></pre><blockquote>
+<p>以上基本完成了部署配置，可以开始部署了</p>
+<ul>
+<li>mvn clean install  清理并编译到本地库中</li>
+<li>mvn tomcat7:redeploy 第一次发布用tomcat7:deploy,再次发布用tomcat7:redeploy</li>
+</ul>
+</blockquote>
+<p>然后可以在浏览器中通过url访问你的业务逻辑了</p>
 
             
           </span>
@@ -324,14 +632,14 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
